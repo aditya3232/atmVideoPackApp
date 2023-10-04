@@ -1,0 +1,75 @@
+@extends('mazer_template.layouts.app')
+@section('title', 'Tambah Roles')
+@section('content')
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Tambah Roles</h3>
+            </div>
+        </div>
+    </div>
+
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        {{-- <a href="{{ route('admin.roles.index') }}" type="button" class="btn btn-primary"><i class="bi bi-arrow-return-left" style="font-size: 13px;"></i> Kembali</a> --}}
+                        <a href="{{ route('admin.roles.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left"
+                                style="font-size: 13px;"></i></a>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form class="form" action="{{ route('admin.roles.store') }}" id="" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="name">Nama Role</label>
+                                            <input type="text" id="name" class="form-control" placeholder="Nama role" name="name"
+                                                value="{{ old('name') ? old('name') : '' }}">
+                                            @if($errors->has('name'))
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 mt-4">
+                                    {{-- <button class="btn btn-primary" type="submit">Submit</button> --}}
+                                    <button class="align-items-center col-12 btn btn-lg" type="submit" style='border-radius:12px; background-color:#56B000; color:white;' id="submit-create-role"
+                                        onClick="changeToLoadingFormCreateRole()">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function changeToLoadingFormCreateRole() {
+        var btn = document.getElementById('submit-create-role');
+        btn.innerHTML = '<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...';
+        btn.disabled = true;
+
+        setTimeout(function () {
+            btn.disabled = false;
+            btn.innerHTML = 'Create';
+
+            submitFormCreateRole();
+        }, 2000);
+    }
+
+    function submitFormCreateRole() {
+        var form = document.getElementById('submit-create-role');
+
+        form.submit();
+    }
+
+</script>
+
+@endsection
