@@ -15,15 +15,8 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     public function index() {
-        $count_office = Office::count();
-        $count_card = Entry::count();
-        $count_mcu = Mcu::count();
-        $count_user_active = UserMcu::where('status_user', '0')->count();
-        $count_user_no_active = UserMcu::where('status_user', '1')->count();
-        $count_log_accept = Log::where('log_status', '0')->count();
-        $count_log_reject = Log::where('log_status', '1')->count();
 
-        return view('mazer_template.admin.home.home', compact('count_office', 'count_card', 'count_mcu', 'count_user_active', 'count_user_no_active', 'count_log_accept', 'count_log_reject'));
+        return view('mazer_template.admin.home.home');
     }
 
     public function dataTableTotalCardMcu(Request $request) {

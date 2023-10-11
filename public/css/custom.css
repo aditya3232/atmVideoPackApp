@@ -152,6 +152,16 @@
 .bit-login-title {
   font-size: 20px !important;
   font-weight: 700 !important;
+  /* font Maison Neue Extended Bold */
+  font-family: "Maison Neue Extended Bold", sans-serif !important;
+}
+
+.font-maison {
+  font-family: "Maison Neue Extended Bold", sans-serif !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
 }
 
 .bit-login-title span{

@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
-    <title>Login | Door Lock System</title>
+    <title>Login | Atm Video Pack</title>
     <link rel="icon" type="image/png" href="{{ asset('img/bit-rounded.png') }}">
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
                                 <img src="/assets/images/logo/dm_logo.png" class="bri-logo mr-2" alt="bit-company">
                             </div>
                             <div class="bit-login-title">
-                                <h3>Gatewatch Apps</h3>
+                                <h3>Atm Video Pack</h3>
                             </div>
                         </h1>
                         <form class="text-left" id="login-form" method="POST" action="{{ route('login') }}">
@@ -73,15 +73,15 @@
                             @csrf
                             <div class="form">
                                 <div id="username-field" class="field-wrapper input">
-                                    <label for="username">USERNAME</label>
+                                    <label for="username" class="font-maison font-bold">Username</label>
                                     <i data-feather="user"></i>
-                                    <input id="username" class="block mt-1 w-full form-control" type="text" name="username" placeholder="username" :value="old('username')" required autofocus />
+                                    <input id="username" class="block mt-1 w-full form-control" type="text" name="username" placeholder="Username" :value="old('username')" required autofocus />
                                     <x-input-error :messages="$errors->get('username')" class="mt-2" />
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-3">
                                     <div class="d-flex justify-content-between">
-                                        <label for="password">PASSWORD</label>
+                                        <label for="password" class="font-maison font-bold">Password</label>
                                     </div>
                                     <i data-feather="lock"></i>
                                     <input id="password" class="block mt-1 w-full form-control" type="password" name="password" placeholder="Password" required autocomplete="current-password" />
@@ -94,13 +94,13 @@
                                 </div>
                                 <div class="d-sm-flex justify-content-between">
                                     <div class="field-wrapper">
-                                        <button id="btn-login" class="btn btn-primary" value="" onClick="changeToLoading()">Login</button>
+                                        <button id="btn-login" class="btn btn-primary font-maison font-bold" value="" onClick="changeToLoading()">Login</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                         <br>
-                        <p class="">Copyright {{ \Carbon\Carbon::now()->format('Y') }} - Digital Minds</p>
+                        <p class="font-maison font-bold">Copyright {{ \Carbon\Carbon::now()->format('Y') }} - Digital Minds</p>
                         </p>
                     </div>
                 </div>

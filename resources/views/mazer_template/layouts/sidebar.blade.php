@@ -40,28 +40,55 @@
                         class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
                             <i class="bi bi-file-earmark-ruled-fill"></i>
-                            <span>Log Cards</span>
+                            <span>Human Detection</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('sidebarParentSettingDoorLock', App\Models\Sidebar::class)
-                    <li class="{{ (request()->is('admin/settinguser')) || (request()->is('admin/mcu')) || (request()->is('admin/card')) ? 'sidebar-item active' : 'sidebar-item' }}
-                        has-sub">
+                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                    <li
+                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            <span>Vandal Detection</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                    <li
+                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            <span>Streaming Cctv</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                    <li
+                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            <span>Download Playback</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('sidebarParentMasterData', App\Models\Sidebar::class)
+                    <li class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'sidebar-item active' : 'sidebar-item' }}
+                    has-sub">
                         <a href="#" class='sidebar-link'>
-                            <i class="bi bi-gear-fill"></i>
-                            <span>Setting Door Lock</span>
+                            <i class="bi bi-stack"></i>
+                            <span>Master Device</span>
                         </a>
                         <ul
-                            class="{{ (request()->is('admin/settinguser')) || (request()->is('admin/mcu')) || (request()->is('admin/card')) ? 'submenu active' : 'submenu' }}">
-                            <li class="submenu-item {{ (request()->is('admin/settinguser')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.settinguser.index') }}"><i class="bi bi-gear-fill"></i> Setting User</a>
+                            class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
+                            <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.office.index') }}"><i class=" bi bi-stack"></i> Device</a>
                             </li>
-                            <li class="submenu-item {{ (request()->is('admin/card')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.card.index') }}"><i class="bi bi-gear-fill"></i> Card</a>
-                            </li>
-                            <li class="submenu-item {{ (request()->is('admin/mcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.mcu.index') }}"><i class="bi bi-gear-fill"></i> Door Access</a>
+                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Cctv</a>
                             </li>
                         </ul>
                     </li>
@@ -72,15 +99,21 @@
                     has-sub">
                         <a href="#" class='sidebar-link'>
                             <i class="bi bi-stack"></i>
-                            <span>Master Data</span>
+                            <span>Master Location</span>
                         </a>
                         <ul
                             class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
                             <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.office.index') }}"><i class=" bi bi-stack"></i> Data Kantor</a>
+                                <a href="{{ route('admin.office.index') }}"><i class=" bi bi-stack"></i> Location</a>
                             </li>
                             <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Data Users Door Access</a>
+                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Regional Office</a>
+                            </li>
+                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> KC Supervisi</a>
+                            </li>
+                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Branch</a>
                             </li>
                         </ul>
                     </li>
