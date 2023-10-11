@@ -27,6 +27,11 @@ class SidebarPolicy
         return $user->role->hasPermission('sidebar parent setting admin');
     }
 
+    public function sidebarParentHelp(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent help');
+    }
+
 
     // ini authorization parent, boleh diganti
     public function sidebarParentHumanDetection(User $user)
@@ -61,9 +66,9 @@ class SidebarPolicy
 
 
     // ini authorization child, boleh diganti
-    public function sidebarChildSettingAdminPermissions(User $user)
+    public function sidebarChildSettingAdminPermission(User $user)
     {
-        return $user->role->hasPermission('sidebar child permissions'); 
+        return $user->role->hasPermission('sidebar child permission'); 
     }
 
 

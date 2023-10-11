@@ -49,7 +49,7 @@
                 @can('sidebarParentVandalDetection', App\Models\Sidebar::class)
                     <li
                         class="{{ (request()->is('admin/vandaldetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
-                        <a href="{{ route('admin.humandetection.index') }}" class='sidebar-link'>
+                        <a href="{{ route('admin.vandaldetection.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.vandal-detection')
                             <span>Vandal Detection</span>
                         </a>
@@ -135,7 +135,7 @@
                             <li class="{{ (request()->is('admin/roles')) ? 'submenu-item active' : 'submenu-item' }}">
                                 <a href="{{ route('admin.roles.index') }}"><i class="bi bi-person-check-fill"></i> Roles</a>
                             </li>
-                            @can('sidebarChildSettingAdminPermissions', App\Models\Sidebar::class)
+                            @can('sidebarChildSettingAdminPermission', App\Models\Sidebar::class)
                                 <li class="{{ (request()->is('admin/permissions')) ? 'submenu-item active' : 'submenu-item' }}">
                                     <a href="{{ route('admin.permissions.index') }}"><i class="bi bi-person-lines-fill"></i> Permissions</a>
                                 </li>
@@ -150,7 +150,7 @@
                     </li>
                 @endcan
 
-                @can('sidebarParentHelps', App\Models\Sidebar::class)
+                @can('sidebarParentHelp', App\Models\Sidebar::class)
                     <li class="sidebar-item  has-sub">
                         <a href="#" class='sidebar-link'>
                             <i class="bi bi-question-circle-fill"></i>
