@@ -16,41 +16,54 @@ class SidebarPolicy
         }
     }
 
-    // ini authorization Parent untuk permission 
+    // ini authorization jgn dihapus
     public function sidebarParentDashboard(User $user)
     {
-        return $user->role->hasPermission('sidebar parent dashboard'); // ini jgn ditampilkan di tabel biar g dihapus
-    }
-
-    public function sidebarParentLogAcceptReject(User $user)
-    {
-        return $user->role->hasPermission('sidebar parent log accept reject'); 
-    }
-
-    public function sidebarParentSettingDoorLock(User $user)
-    {
-        return $user->role->hasPermission('sidebar parent setting door lock'); 
-    }
-
-    public function sidebarParentMasterData(User $user)
-    {
-        return $user->role->hasPermission('sidebar parent master data'); 
+        return $user->role->hasPermission('sidebar parent dashboard');
     }
 
     public function sidebarParentSettingAdmin(User $user)
     {
-        return $user->role->hasPermission('sidebar parent setting admin'); 
+        return $user->role->hasPermission('sidebar parent setting admin');
     }
 
-    public function sidebarParentHelps(User $user)
+
+    // ini authorization parent, boleh diganti
+    public function sidebarParentHumanDetection(User $user)
     {
-        return $user->role->hasPermission('sidebar parent helps'); 
+        return $user->role->hasPermission('sidebar parent human detection');
     }
 
-    // ini authorization Child untuk permission
+    public function sidebarParentVandalDetection(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent vandal detection');
+    }
+
+    public function sidebarParentStreamingCctv(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent streaming cctv');
+    }
+
+    public function sidebarParentDownloadPlayback(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent download playback');
+    }
+
+    public function sidebarParentMasterDevice(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent master device');
+    }
+
+    public function sidebarParentMasterLocation(User $user)
+    {
+        return $user->role->hasPermission('sidebar parent master location');
+    }
+
+
+    // ini authorization child, boleh diganti
     public function sidebarChildSettingAdminPermissions(User $user)
     {
-        return $user->role->hasPermission('sidebar permissions'); 
+        return $user->role->hasPermission('sidebar child permissions'); 
     }
 
 

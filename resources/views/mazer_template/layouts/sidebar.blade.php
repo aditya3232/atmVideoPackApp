@@ -12,10 +12,6 @@
 
                     <h1 class="text-uppercase text-briview-login align-items-center justify-content-center">
                         <img src="/assets/images/logo/dm_logo.png" class="mr-4" alt="polresta-tidore-company" style="max-width: 90%; height: 100%;"><br>
-                        {{-- <div class="d-flex flex-column align-items-start" style="font-size: 14px; "> --}}
-                        {{-- <div class="" style="font-size: 20px; ">
-                            <u>Gatewatch App</u>
-                        </div> --}}
                     </h1>
                 </div>
                 <div class="toggler">
@@ -25,7 +21,12 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                {{-- models harus ada walaupun dummy --}}
+                {{-- 
+
+                - sidebarParentDashboard itu dari SidebarPolicy.php
+                - isinya adalah function sidebarParentDashboard yang mengembalikan => return $user->role->hasPermission('sidebar parent dashboard');
+
+                --}}
                 @can('sidebarParentDashboard', App\Models\Sidebar::class)
                     <li class="{{ (request()->is('admin')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.index') }}" class='sidebar-link'>
@@ -35,85 +36,85 @@
                     </li>
                 @endcan
 
-                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                @can('sidebarParentHumanDetection', App\Models\Sidebar::class)
                     <li
-                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
-                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                        class="{{ (request()->is('admin/humandetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.humandetection.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.human-detection')
                             <span>Human Detection</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                @can('sidebarParentVandalDetection', App\Models\Sidebar::class)
                     <li
-                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
-                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                        class="{{ (request()->is('admin/vandaldetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.humandetection.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.vandal-detection')
                             <span>Vandal Detection</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                @can('sidebarParentStreamingCctv', App\Models\Sidebar::class)
                     <li
-                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
-                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                        class="{{ (request()->is('admin/streamingcctv')) || (request()->is('admin/streamingcctv')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.streamingcctv.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.stream')
                             <span>Streaming Cctv</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('sidebarParentLogAcceptReject', App\Models\Sidebar::class)
+                @can('sidebarParentDownloadPlayback', App\Models\Sidebar::class)
                     <li
-                        class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
-                        <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
+                        class="{{ (request()->is('admin/downloadplayback')) || (request()->is('admin/downloadplayback')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.downloadplayback.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.playback')
                             <span>Download Playback</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('sidebarParentMasterData', App\Models\Sidebar::class)
-                    <li class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'sidebar-item active' : 'sidebar-item' }}
+                @can('sidebarParentMasterDevice', App\Models\Sidebar::class)
+                    <li class="{{ (request()->is('admin/device')) || (request()->is('admin/cctv')) ? 'sidebar-item active' : 'sidebar-item' }}
                     has-sub">
                         <a href="#" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.master-data')
                             <span>Master Device</span>
                         </a>
                         <ul
-                            class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
-                            <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.office.index') }}">@include('mazer_template.layouts.icons.device') Device</a>
+                            class="{{ (request()->is('admin/device')) || (request()->is('admin/cctv')) ? 'submenu active' : 'submenu' }}">
+                            <li class="submenu-item {{ (request()->is('admin/device')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.device.index') }}">@include('mazer_template.layouts.icons.device') Device</a>
                             </li>
-                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.cctv') Cctv</a>
+                            <li class="submenu-item {{ (request()->is('admin/cctv')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.cctv.index') }}">@include('mazer_template.layouts.icons.cctv') Cctv</a>
                             </li>
                         </ul>
                     </li>
                 @endcan
 
-                @can('sidebarParentMasterData', App\Models\Sidebar::class)
-                    <li class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'sidebar-item active' : 'sidebar-item' }}
+                @can('sidebarParentMasterLocation', App\Models\Sidebar::class)
+                    <li class="{{ (request()->is('admin/location')) || (request()->is('admin/regionaloffice')) || (request()->is('admin/kcsupervisi')) || (request()->is('admin/branch')) ? 'sidebar-item active' : 'sidebar-item' }}
                     has-sub">
                         <a href="#" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.master-data')
                             <span>Master Location</span>
                         </a>
                         <ul
-                            class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
-                            <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.office.index') }}">@include('mazer_template.layouts.icons.location') Location</a>
+                            class="{{ (request()->is('admin/location')) || (request()->is('admin/regionaloffice')) || (request()->is('admin/kcsupervisi')) || (request()->is('admin/branch'))  ? 'submenu active' : 'submenu' }}">
+                            <li class="submenu-item {{ (request()->is('admin/location')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.location.index') }}">@include('mazer_template.layouts.icons.location') Location</a>
                             </li>
-                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') Regional Office</a>
+                            <li class="submenu-item {{ (request()->is('admin/regionaloffice')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.regionaloffice.index') }}">@include('mazer_template.layouts.icons.location') Regional Office</a>
                             </li>
-                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') KC Supervisi</a>
+                            <li class="submenu-item {{ (request()->is('admin/kcsupervisi')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.kcsupervisi.index') }}">@include('mazer_template.layouts.icons.location') Kc Supervisi</a>
                             </li>
-                            <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') Branch</a>
+                            <li class="submenu-item {{ (request()->is('admin/branch')) ? 'active' : '' }}">
+                                <a href="{{ route('admin.branch.index') }}">@include('mazer_template.layouts.icons.location') Branch</a>
                             </li>
                         </ul>
                     </li>
