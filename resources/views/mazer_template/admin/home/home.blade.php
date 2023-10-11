@@ -32,7 +32,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stats-icon purple">
-                                    <a href="" class="mt-2"><i class="bi bi-file-earmark-ruled-fill"></i></a>
+                                    <a href="" class="">
+                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -49,7 +51,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stats-icon blue">
-                                    <a href="" class="mt-2"><i class="bi bi-file-earmark-ruled-fill"></i></a>
+                                    <a href="" class="">
+                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -66,7 +70,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stats-icon green">
-                                    <a href="" class="mt-2"><i class="bi bi-people-fill"></i></a>
+                                    <a href="" class="">
+                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.cctv-white')->render()) }}" alt="" width="25">
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -83,7 +89,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stats-icon red">
-                                    <a href="" class="mt-2"><i class="bi bi-people-fill"></i></a>
+                                    <a href="" class="">
+                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.cctv-white')->render()) }}" alt="" width="25">
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-8">

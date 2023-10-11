@@ -39,7 +39,7 @@
                     <li
                         class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            @include('mazer_template.layouts.icons.human-detection')
                             <span>Human Detection</span>
                         </a>
                     </li>
@@ -49,7 +49,7 @@
                     <li
                         class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            @include('mazer_template.layouts.icons.vandal-detection')
                             <span>Vandal Detection</span>
                         </a>
                     </li>
@@ -59,7 +59,7 @@
                     <li
                         class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            @include('mazer_template.layouts.icons.stream')
                             <span>Streaming Cctv</span>
                         </a>
                     </li>
@@ -69,7 +69,7 @@
                     <li
                         class="{{ (request()->is('admin/log/accepted')) || (request()->is('admin/log/rejected')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.log.indexaccepted') }}" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-ruled-fill"></i>
+                            @include('mazer_template.layouts.icons.playback')
                             <span>Download Playback</span>
                         </a>
                     </li>
@@ -79,16 +79,16 @@
                     <li class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'sidebar-item active' : 'sidebar-item' }}
                     has-sub">
                         <a href="#" class='sidebar-link'>
-                            <i class="bi bi-stack"></i>
+                            @include('mazer_template.layouts.icons.master-data')
                             <span>Master Device</span>
                         </a>
                         <ul
                             class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
                             <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.office.index') }}"><i class=" bi bi-stack"></i> Device</a>
+                                <a href="{{ route('admin.office.index') }}">@include('mazer_template.layouts.icons.device') Device</a>
                             </li>
                             <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Cctv</a>
+                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.cctv') Cctv</a>
                             </li>
                         </ul>
                     </li>
@@ -98,22 +98,22 @@
                     <li class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'sidebar-item active' : 'sidebar-item' }}
                     has-sub">
                         <a href="#" class='sidebar-link'>
-                            <i class="bi bi-stack"></i>
+                            @include('mazer_template.layouts.icons.master-data')
                             <span>Master Location</span>
                         </a>
                         <ul
                             class="{{ (request()->is('admin/usermcu')) || (request()->is('admin/office')) ? 'submenu active' : 'submenu' }}">
                             <li class="submenu-item {{ (request()->is('admin/office')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.office.index') }}"><i class=" bi bi-stack"></i> Location</a>
+                                <a href="{{ route('admin.office.index') }}">@include('mazer_template.layouts.icons.location') Location</a>
                             </li>
                             <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Regional Office</a>
+                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') Regional Office</a>
                             </li>
                             <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> KC Supervisi</a>
+                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') KC Supervisi</a>
                             </li>
                             <li class="submenu-item {{ (request()->is('admin/usermcu')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.usermcu.index') }}"><i class="bi bi-stack"></i> Branch</a>
+                                <a href="{{ route('admin.usermcu.index') }}">@include('mazer_template.layouts.icons.location') Branch</a>
                             </li>
                         </ul>
                     </li>

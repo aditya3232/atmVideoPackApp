@@ -16,6 +16,7 @@
 
     {{-- custom css --}}
     <link rel="stylesheet" href="/css/custom.css">
+    
 
     {{-- new datatable --}}
     <link rel="stylesheet" href="/assets/css/bootstrap.min.csss">
