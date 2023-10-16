@@ -18,13 +18,12 @@ class DeviceController extends Controller
         // disini harus semua kolom yang ada di table di definisikan
         $columns = array( 
                             0 =>'tb_tid.tid',
-                            1 =>'tb_tid.ip_address',
-                            2 =>'tb_tid.sn_mini_pc',
-                            3 =>'regional_office.regional_office_name',
-                            4 =>'kc_supervisi.kc_supervisi_name',
-                            5 =>'branch.branch_name',
-                            6 =>'tb_tid.created_at',
-                            7 =>'tb_tid.id', //action
+                            1 =>'tb_tid.sn_mini_pc',
+                            2 =>'regional_office.regional_office_name',
+                            3 =>'kc_supervisi.kc_supervisi_name',
+                            4 =>'branch.branch_name',
+                            5 =>'tb_tid.created_at',
+                            6 =>'tb_tid.id', //action
                         );
 
         $totalData = TbTid::count();
@@ -43,7 +42,6 @@ class DeviceController extends Controller
                         ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
                         ->join('tb_branch as branch', 'branch.id', '=', 'location.branch_id')
                         ->select('tb_tid.tid',
-                            'tb_tid.ip_address',
                             'tb_tid.sn_mini_pc',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
@@ -64,7 +62,6 @@ class DeviceController extends Controller
                         ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
                         ->join('tb_branch as branch', 'branch.id', '=', 'location.branch_id')
                         ->select('tb_tid.tid',
-                            'tb_tid.ip_address',
                             'tb_tid.sn_mini_pc',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
@@ -87,7 +84,6 @@ class DeviceController extends Controller
                         ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
                         ->join('tb_branch as branch', 'branch.id', '=', 'location.branch_id')
                         ->select('tb_tid.tid',
-                            'tb_tid.ip_address',
                             'tb_tid.sn_mini_pc',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
@@ -116,7 +112,6 @@ class DeviceController extends Controller
 
                 $nestedData['id'] = $FormTbTid->id;
                 $nestedData['tid'] = $FormTbTid->tid;
-                $nestedData['ip_address'] = $FormTbTid->ip_address;
                 $nestedData['sn_mini_pc'] = $FormTbTid->sn_mini_pc;
                 $nestedData['regional_office_name'] = $FormTbTid->regional_office_name;
                 $nestedData['kc_supervisi_name'] = $FormTbTid->kc_supervisi_name;

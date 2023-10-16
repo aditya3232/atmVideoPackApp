@@ -30,7 +30,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>TID</th>
-                                <th>IP Address</th>
                                 <th>SN Mini PC</th>
                                 <th>Regional Office</th>
                                 <th>KC Supervisi</th>
