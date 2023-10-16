@@ -77,21 +77,12 @@
                 @endcan
 
                 @can('sidebarParentMasterDevice', App\Models\Sidebar::class)
-                    <li class="{{ (request()->is('admin/device')) || (request()->is('admin/cctv')) ? 'sidebar-item active' : 'sidebar-item' }}
-                    has-sub">
-                        <a href="#" class='sidebar-link'>
-                            @include('mazer_template.layouts.icons.master-data')
+                    <li
+                        class="{{ (request()->is('admin/device')) || (request()->is('admin/device')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                        <a href="{{ route('admin.device.index') }}" class='sidebar-link'>
+                            @include('mazer_template.layouts.icons.device')
                             <span>Master Device</span>
                         </a>
-                        <ul
-                            class="{{ (request()->is('admin/device')) || (request()->is('admin/cctv')) ? 'submenu active' : 'submenu' }}">
-                            <li class="submenu-item {{ (request()->is('admin/device')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.device.index') }}">@include('mazer_template.layouts.icons.device') Device</a>
-                            </li>
-                            <li class="submenu-item {{ (request()->is('admin/cctv')) ? 'active' : '' }}">
-                                <a href="{{ route('admin.cctv.index') }}">@include('mazer_template.layouts.icons.cctv') Cctv</a>
-                            </li>
-                        </ul>
                     </li>
                 @endcan
 
@@ -99,7 +90,7 @@
                     <li class="{{ (request()->is('admin/location')) || (request()->is('admin/regionaloffice')) || (request()->is('admin/kcsupervisi')) || (request()->is('admin/branch')) ? 'sidebar-item active' : 'sidebar-item' }}
                     has-sub">
                         <a href="#" class='sidebar-link'>
-                            @include('mazer_template.layouts.icons.master-data')
+                            @include('mazer_template.layouts.icons.location')
                             <span>Master Location</span>
                         </a>
                         <ul

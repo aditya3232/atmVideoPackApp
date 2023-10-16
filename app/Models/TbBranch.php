@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Office extends Model
+class TbBranch extends Model
 {
     use HasFactory;
 
-    // define table
-    protected $table = 'tb_office';
+    protected $table = 'tb_branch';
 
-    // define guarded
     protected $guarded = ['id'];
 }

@@ -1,5 +1,5 @@
 @extends('mazer_template.layouts.app')
-@section('title', 'Users List')
+@section('title', 'Branches List')
 @section('content')
 
 
@@ -7,13 +7,13 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3><i class="bi bi-people-fill"></i> Users <small class="text-muted">List</small></h3>
+                <h3>@include('mazer_template.layouts.icons.location') Branches <small class="text-muted">List</small></h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Users List</li>
+                        <li class="breadcrumb-item active" aria-current="page">Branches List</li>
                     </ol>
                 </nav>
             </div>
@@ -25,13 +25,13 @@
                 <a href="{{ route('admin.users.create') }}" title='Create User' type="button" class="btn" style='border-radius:12px; background-color:#56B000; color:white;'><i class="bi bi-plus-circle"
                         style="font-size: 13px; font-weight:bold"></i></a>
                 <div class="table-responsive mt-4 mb-4" style="width: 100%;">
-                    <table class="table table-hover" id="" style="border-collapse: collapse; width: 100%;">
+                    <table class="table table-hover" id="form_branch" style="border-collapse: collapse; width: 100%;">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Username</th>
-                                <th>Role</th>
+                                <th>Nama Branch</th>
+                                <th>Kode Branch</th>
+                                <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

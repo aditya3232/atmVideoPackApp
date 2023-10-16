@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 - 'middleware' => ['auth', 'roleHasPermission:sidebar parent dashboard'] => data roleHasPermission itu ditmabahkan di table permissions
+- middleware disini agar link dapat diakses, sedangkan middleware di sidebar agar link dapat ditampilkan
 */
 
 Route::get('/', function () {
@@ -111,7 +112,7 @@ Route::group(['prefix' => 'admin/profiles', 'as' => 'admin.profiles.', 'middlewa
 });
 
 // human detection
-Route::group(['prefix' => 'admin/humandetection', 'as' => 'admin.humandetection.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/humandetection', 'as' => 'admin.humandetection.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent human detection']], function() {
     Route::get('/', [HumanDetectionController::class, 'index'])->name('index');
     Route::post('/datatable', [HumanDetectionController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [HumanDetectionController::class, 'create'])->name('create');
@@ -122,7 +123,7 @@ Route::group(['prefix' => 'admin/humandetection', 'as' => 'admin.humandetection.
 });
 
 // vandal detection
-Route::group(['prefix' => 'admin/vandaldetection', 'as' => 'admin.vandaldetection.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/vandaldetection', 'as' => 'admin.vandaldetection.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent vandal detection']], function() {
     Route::get('/', [VandalDetectionController::class, 'index'])->name('index');
     Route::post('/datatable', [VandalDetectionController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [VandalDetectionController::class, 'create'])->name('create');
@@ -133,7 +134,7 @@ Route::group(['prefix' => 'admin/vandaldetection', 'as' => 'admin.vandaldetectio
 });
 
 // Streaming Cctv
-Route::group(['prefix' => 'admin/streamingcctv', 'as' => 'admin.streamingcctv.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/streamingcctv', 'as' => 'admin.streamingcctv.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent streaming cctv']], function() {
     Route::get('/', [StreamingCctvController::class, 'index'])->name('index');
     Route::post('/datatable', [StreamingCctvController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [StreamingCctvController::class, 'create'])->name('create');
@@ -144,7 +145,7 @@ Route::group(['prefix' => 'admin/streamingcctv', 'as' => 'admin.streamingcctv.',
 });
 
 // Download Playback
-Route::group(['prefix' => 'admin/downloadplayback', 'as' => 'admin.downloadplayback.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/downloadplayback', 'as' => 'admin.downloadplayback.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent download playback']], function() {
     Route::get('/', [DownloadPlaybackController::class, 'index'])->name('index');
     Route::post('/datatable', [DownloadPlaybackController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [DownloadPlaybackController::class, 'create'])->name('create');
@@ -155,7 +156,7 @@ Route::group(['prefix' => 'admin/downloadplayback', 'as' => 'admin.downloadplayb
 });
 
 // Device
-Route::group(['prefix' => 'admin/device', 'as' => 'admin.device.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/device', 'as' => 'admin.device.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent master device']], function() {
     Route::get('/', [DeviceController::class, 'index'])->name('index');
     Route::post('/datatable', [DeviceController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [DeviceController::class, 'create'])->name('create');
@@ -165,19 +166,8 @@ Route::group(['prefix' => 'admin/device', 'as' => 'admin.device.', 'middleware' 
     Route::delete('/destroy/{id}', [DeviceController::class, 'destroy'])->name('destroy');
 });
 
-// Cctv
-Route::group(['prefix' => 'admin/cctv', 'as' => 'admin.cctv.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
-    Route::get('/', [CctvController::class, 'index'])->name('index');
-    Route::post('/datatable', [CctvController::class, 'dataTable'])->name('datatable');
-    Route::get('/create', [CctvController::class, 'create'])->name('create');
-    Route::post('/store', [CctvController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [CctvController::class, 'edit'])->name('edit');
-    Route::post('/update/{id}', [CctvController::class, 'update'])->name('update');
-    Route::delete('/destroy/{id}', [CctvController::class, 'destroy'])->name('destroy');
-});
-
 // Location
-Route::group(['prefix' => 'admin/location', 'as' => 'admin.location.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/location', 'as' => 'admin.location.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent master device']], function() {
     Route::get('/', [LocationController::class, 'index'])->name('index');
     Route::post('/datatable', [LocationController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [LocationController::class, 'create'])->name('create');
@@ -188,7 +178,7 @@ Route::group(['prefix' => 'admin/location', 'as' => 'admin.location.', 'middlewa
 });
 
 // Regional Office
-Route::group(['prefix' => 'admin/regionaloffice', 'as' => 'admin.regionaloffice.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/regionaloffice', 'as' => 'admin.regionaloffice.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent master device']], function() {
     Route::get('/', [RegionalOfficeController::class, 'index'])->name('index');
     Route::post('/datatable', [RegionalOfficeController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [RegionalOfficeController::class, 'create'])->name('create');
@@ -199,7 +189,7 @@ Route::group(['prefix' => 'admin/regionaloffice', 'as' => 'admin.regionaloffice.
 });
 
 // Kc Supervisi
-Route::group(['prefix' => 'admin/kcsupervisi', 'as' => 'admin.kcsupervisi.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/kcsupervisi', 'as' => 'admin.kcsupervisi.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent master device']], function() {
     Route::get('/', [KcSupervisiController::class, 'index'])->name('index');
     Route::post('/datatable', [KcSupervisiController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [KcSupervisiController::class, 'create'])->name('create');
@@ -210,7 +200,7 @@ Route::group(['prefix' => 'admin/kcsupervisi', 'as' => 'admin.kcsupervisi.', 'mi
 });
 
 // Branch
-Route::group(['prefix' => 'admin/branch', 'as' => 'admin.branch.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent setting admin']], function() {
+Route::group(['prefix' => 'admin/branch', 'as' => 'admin.branch.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent master device']], function() {
     Route::get('/', [BranchController::class, 'index'])->name('index');
     Route::post('/datatable', [BranchController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [BranchController::class, 'create'])->name('create');
