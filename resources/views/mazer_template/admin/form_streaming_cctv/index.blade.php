@@ -1,5 +1,5 @@
 @extends('mazer_template.layouts.app')
-@section('title', 'Users List')
+@section('title', 'CCTV streams List')
 @section('content')
 
 
@@ -7,13 +7,13 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3><i class="bi bi-people-fill"></i> Users <small class="text-muted">List</small></h3>
+                <h3>@include('mazer_template.layouts.icons.stream') CCTV streams <small class="text-muted">List</small></h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Users List</li>
+                        <li class="breadcrumb-item active" aria-current="page">CCTV streams List</li>
                     </ol>
                 </nav>
             </div>
