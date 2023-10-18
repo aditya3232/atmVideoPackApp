@@ -136,6 +136,7 @@ Route::group(['prefix' => 'admin/vandaldetection', 'as' => 'admin.vandaldetectio
 // Streaming Cctv
 Route::group(['prefix' => 'admin/streamingcctv', 'as' => 'admin.streamingcctv.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent streaming cctv']], function() {
     Route::get('/', [StreamingCctvController::class, 'index'])->name('index');
+    Route::get('/streaming/{id}', [StreamingCctvController::class, 'streamingCctv'])->name('streaming');
     Route::post('/datatable', [StreamingCctvController::class, 'dataTable'])->name('datatable');
     Route::get('/create', [StreamingCctvController::class, 'create'])->name('create');
     Route::post('/store', [StreamingCctvController::class, 'store'])->name('store');

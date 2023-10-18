@@ -22,7 +22,7 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('admin.users.create') }}" title='Create User' type="button" class="btn" style='border-radius:12px; background-color:#56B000; color:white;'><i class="bi bi-plus-circle"
+                <a href="{{ route('admin.kcsupervisi.create') }}" title='Create User' type="button" class="btn" style='border-radius:12px; background-color:#56B000; color:white;'><i class="bi bi-plus-circle"
                         style="font-size: 13px; font-weight:bold"></i></a>
                 <div class="table-responsive mt-4 mb-4" style="width: 100%;">
                     <table class="table table-hover" id="form_kc_supervisi" style="border-collapse: collapse; width: 100%;">

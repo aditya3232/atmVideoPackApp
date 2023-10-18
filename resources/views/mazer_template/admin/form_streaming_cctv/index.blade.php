@@ -25,13 +25,14 @@
                 <a href="{{ route('admin.users.create') }}" title='Create User' type="button" class="btn" style='border-radius:12px; background-color:#56B000; color:white;'><i class="bi bi-plus-circle"
                         style="font-size: 13px; font-weight:bold"></i></a>
                 <div class="table-responsive mt-4 mb-4" style="width: 100%;">
-                    <table class="table table-hover" id="" style="border-collapse: collapse; width: 100%;">
+                    <table class="table table-hover" id="form_streaming_cctv" style="border-collapse: collapse; width: 100%;">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Username</th>
-                                <th>Role</th>
+                                <th>TID</th>
+                                <th>Regional Office</th>
+                                <th>KC Supervisi</th>
+                                <th>Branch</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

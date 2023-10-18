@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbBranch;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class BranchController extends Controller
 {
@@ -90,5 +96,82 @@ class BranchController extends Controller
             
         return response()->json($json_data);
 
+    }
+
+    public function create() {
+        return view('mazer_template.admin.form_branch.create');
+    }
+
+    public function store(Request $request) {
+        $messages = [
+        'required' => ':attribute wajib diisi.',
+        'min' => ':attribute harus diisi minimal :min karakter.',
+        'max' => ':attribute harus diisi maksimal :max karakter.',
+        'size' => ':attribute harus diisi tepat :size karakter.',
+        'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'branch_name' => 'required',
+            'branch_code' => 'required',
+        ],$messages);
+
+        // if input no_card not null then must unique, but when null or string '' then not unique
+        if($request->input('branch_name') != null) {
+            $validator = Validator::make($request->all(),[
+                'branch_name' => 'required|unique:tb_branch,branch_name',
+            ],$messages);
+        }
+
+        if($request->input('branch_code') != null) {
+            $validator = Validator::make($request->all(),[
+                'branch_code' => 'required|unique:tb_branch,branch_code',
+            ],$messages);
+        }
+
+        if($validator->fails()) {
+            Alert::error('Cek kembali pengisian form, terima kasih !');
+            return redirect()->route('admin.branch.create')->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+        DB::beginTransaction();
+
+        DB::table('tb_branch')->insert([
+            'branch_name' => $request->input('branch_name'),
+            'branch_code' => $request->input('branch_code'),
+        ]);
+
+        DB::commit();
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.branch.create');
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.branch.create');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.branch.create');
+
+    } catch (PDOException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.branch.create');
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.branch.create');
+        
+    }
+
+        Alert::success('Sukses', 'Branch berhasil ditambahkan.');
+        return redirect()->route('admin.branch.index');
     }
 }

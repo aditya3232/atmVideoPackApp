@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 
 use App\Models\TbKcSupervisi;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class KcSupervisiController extends Controller
 {
@@ -87,5 +93,74 @@ class KcSupervisiController extends Controller
             
         return response()->json($json_data);
 
+    }
+
+    public function create() {
+        return view('mazer_template.admin.form_kc_supervisi.create');
+    }
+
+     public function store(Request $request) {
+        $messages = [
+        'required' => ':attribute wajib diisi.',
+        'min' => ':attribute harus diisi minimal :min karakter.',
+        'max' => ':attribute harus diisi maksimal :max karakter.',
+        'size' => ':attribute harus diisi tepat :size karakter.',
+        'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'kc_supervisi_name' => 'required',
+        ],$messages);
+
+        // if input no_card not null then must unique, but when null or string '' then not unique
+        if($request->input('kc_supervisi_name') != null) {
+            $validator = Validator::make($request->all(),[
+                'kc_supervisi_name' => 'required|unique:tb_kc_supervisi,kc_supervisi_name',
+            ],$messages);
+        }
+
+        if($validator->fails()) {
+            Alert::error('Cek kembali pengisian form, terima kasih !');
+            return redirect()->route('admin.kcsupervisi.create')->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+        DB::beginTransaction();
+
+        DB::table('tb_kc_supervisi')->insert([
+            'kc_supervisi_name' => $request->input('kc_supervisi_name'),
+        ]);
+
+        DB::commit();
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.kcsupervisi.create');
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.kcsupervisi.create');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.kcsupervisi.create');
+
+    } catch (PDOException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.kcsupervisi.create');
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.kcsupervisi.create');
+        
+    }
+
+        Alert::success('Sukses', 'KC Supervisi berhasil ditambahkan.');
+        return redirect()->route('admin.kcsupervisi.index');
     }
 }

@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbRegionalOffice;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class RegionalOfficeController extends Controller
 {
@@ -86,5 +92,74 @@ class RegionalOfficeController extends Controller
             
         return response()->json($json_data);
 
+    }
+
+    public function create() {
+        return view('mazer_template.admin.form_regional_office.create');
+    }
+
+    public function store(Request $request) {
+        $messages = [
+        'required' => ':attribute wajib diisi.',
+        'min' => ':attribute harus diisi minimal :min karakter.',
+        'max' => ':attribute harus diisi maksimal :max karakter.',
+        'size' => ':attribute harus diisi tepat :size karakter.',
+        'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'regional_office_name' => 'required',
+        ],$messages);
+
+        // if input no_card not null then must unique, but when null or string '' then not unique
+        if($request->input('regional_office_name') != null) {
+            $validator = Validator::make($request->all(),[
+                'regional_office_name' => 'required|unique:tb_regional_office,regional_office_name',
+            ],$messages);
+        }
+
+        if($validator->fails()) {
+            Alert::error('Cek kembali pengisian form, terima kasih !');
+            return redirect()->route('admin.regionaloffice.create')->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+        DB::beginTransaction();
+
+        DB::table('tb_regional_office')->insert([
+            'regional_office_name' => $request->input('regional_office_name'),
+        ]);
+
+        DB::commit();
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.regionaloffice.create');
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.regionaloffice.create');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.regionaloffice.create');
+
+    } catch (PDOException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.regionaloffice.create');
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.regionaloffice.create');
+        
+    }
+
+        Alert::success('Sukses', 'Regional office berhasil ditambahkan.');
+        return redirect()->route('admin.regionaloffice.index');
     }
 }
