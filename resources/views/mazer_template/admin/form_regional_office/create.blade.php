@@ -33,7 +33,7 @@
                                                 <input type="text" id="regional_office_name" class="form-control" placeholder="..." name="regional_office_name"
                                                     value="{{ old('regional_office_name') ? old('regional_office_name') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('regional_office_name'))

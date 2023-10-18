@@ -14,7 +14,6 @@
     <section id="multiple-column-form">
         <div class="row match-height">
             <div class="mb-4">
-                {{-- <a href="{{ route('admin.users.index') }}" type="button" class="btn btn-primary"><i class="bi bi-arrow-return-left" style="font-size: 13px;"></i> Kembali</a> --}}
                 <a href="{{ route('admin.branch.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left" style="font-size: 13px;"></i></a>
             </div>
             <form class="form" action="{{ route('admin.branch.store') }}" id="form-create-branch" method="POST">
@@ -34,7 +33,7 @@
                                                 <input type="text" id="branch_name" class="form-control" placeholder="..." name="branch_name"
                                                     value="{{ old('branch_name') ? old('branch_name') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('branch_name'))
@@ -46,10 +45,10 @@
                                         <div class="form-group has-icon-left">
                                             <label for="text" style="font-weight: bold;">Kode Branch <span class="text-danger">*</span></label>
                                             <div class="position-relative">
-                                                <input type="text" id="branch_code" class="form-control" placeholder="..." name="branch_code"
+                                                <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="branch_code" class="form-control" placeholder="..." name="branch_code"
                                                     value="{{ old('branch_code') ? old('branch_code') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.numeric')
                                                 </div>
                                             </div>
                                             @if($errors->has('branch_code'))

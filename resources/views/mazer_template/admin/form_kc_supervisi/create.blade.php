@@ -34,7 +34,7 @@
                                                 <input type="text" id="kc_supervisi_name" class="form-control" placeholder="..." name="kc_supervisi_name"
                                                     value="{{ old('kc_supervisi_name') ? old('kc_supervisi_name') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('kc_supervisi_name'))

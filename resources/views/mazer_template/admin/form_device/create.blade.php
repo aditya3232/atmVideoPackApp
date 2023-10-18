@@ -27,10 +27,18 @@
 
                                 <div class="row">
                                     <div class="col-md-12 col-12">
-                                        <div class="form-group">
+                                        <div class="form-group has-icon-left">
                                             <label for="tid" style="font-weight: bold">TID</label>
-                                            <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="tid" class="form-control" placeholder="..." name="tid"
+                                            
+                                                
+                                            <div class="position-relative">
+                                                <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="tid" class="form-control" placeholder="..." name="tid"
                                                 value="{{ old('tid') ? old('tid') : '' }}">
+                                                <div class="form-control-icon">
+                                                    @include('mazer_template.layouts.icons.numeric')
+                                                </div>
+                                            </div>
+
                                             @if($errors->has('tid'))
                                                 <span class="text-danger">{{ $errors->first('tid') }}</span>
                                             @endif
@@ -43,7 +51,7 @@
                                                 <input type="text" id="ip_address" class="form-control" placeholder="..." name="ip_address"
                                                     value="{{ old('ip_address') ? old('ip_address') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('ip_address'))
@@ -58,7 +66,7 @@
                                                 <input type="text" id="sn_mini_pc" class="form-control" placeholder="..." name="sn_mini_pc"
                                                     value="{{ old('sn_mini_pc') ? old('sn_mini_pc') : '' }}">
                                                 <div class="form-control-icon">
-                                                    <i class="bi bi-person"></i>
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('sn_mini_pc'))

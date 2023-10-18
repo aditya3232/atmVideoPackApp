@@ -75,20 +75,30 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-12">
-                                        <div class="form-group">
+                                        <div class="form-group has-icon-left">
                                             <label for="address" style="font-weight: bold">Alamat Kantor</label>
-                                            <textarea name="address" id="address" cols="24" class="form-control" placeholder="..."
-                                                rows="3">{{ old('address') ? old('address') : '' }}</textarea>
+                                            <div class="position-relative">
+                                                <textarea name="address" id="address" cols="24" class="form-control" placeholder="..."
+                                                    rows="3">{{ old('address') ? old('address') : '' }}</textarea>
+                                                <div class="form-control-icon">
+                                                        @include('mazer_template.layouts.icons.alphabet')
+                                                </div>
+                                            </div>
                                             @if($errors->has('address'))
                                                 <span class="text-danger">{{ $errors->first('address') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-12">
-                                        <div class="form-group">
+                                        <div class="form-group has-icon-left">
                                             <label for="postal_code" style="font-weight: bold">Kode Pos</label>
-                                            <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="postal_code" class="form-control" placeholder="..." name="postal_code"
-                                                value="{{ old('postal_code') ? old('postal_code') : '' }}">
+                                            <div class="position-relative">
+                                                <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="postal_code" class="form-control" placeholder="..." name="postal_code"
+                                                    value="{{ old('postal_code') ? old('postal_code') : '' }}">
+                                                <div class="form-control-icon">
+                                                            @include('mazer_template.layouts.icons.numeric')
+                                                </div>
+                                            </div>
                                             @if($errors->has('postal_code'))
                                                 <span class="text-danger">{{ $errors->first('postal_code') }}</span>
                                             @endif
