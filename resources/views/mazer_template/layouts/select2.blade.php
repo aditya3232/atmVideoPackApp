@@ -146,3 +146,29 @@
     });
 </script>
 
+{{-- select2 location in form device --}}
+<script>
+    $(document).ready(function () {
+        $(".select2-form-device-location").select2({
+            ajax: {
+                url: "{{ route('admin.device.select2location') }}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+

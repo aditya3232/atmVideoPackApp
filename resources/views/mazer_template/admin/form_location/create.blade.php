@@ -84,7 +84,6 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="row">
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="postal_code" style="font-weight: bold">Kode Pos</label>
@@ -95,8 +94,6 @@
                                             @endif
                                         </div>
                                     </div>
-                                </div>
-
                                 </div>
                             </div>
                         </div>

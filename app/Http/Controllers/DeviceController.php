@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbTid;
-
+use App\Models\TbLocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class DeviceController extends Controller
 {
@@ -136,4 +143,139 @@ class DeviceController extends Controller
         return response()->json($json_data);
 
     }
+
+    public function create() {
+        return view('mazer_template.admin.form_device.create');
+    }
+
+    public function store(Request $request) {
+        $messages = [
+        'required' => ':attribute wajib diisi.',
+        'min' => ':attribute harus diisi minimal :min karakter.',
+        'max' => ':attribute harus diisi maksimal :max karakter.',
+        'size' => ':attribute harus diisi tepat :size karakter.',
+        'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'tid' => 'required',
+            'ip_address' => 'required',
+            'sn_mini_pc' => 'required',
+            'location_id' => 'required',
+        ],$messages);
+
+        // if input no_card not null then must unique, but when null or string '' then not unique
+        if($request->input('tid') != null) {
+            $validator = Validator::make($request->all(),[
+                'tid' => 'required|unique:tb_tid,tid',
+            ],$messages);
+        }
+
+        if($request->input('ip_address') != null) {
+            $validator = Validator::make($request->all(),[
+                'ip_address' => 'required|unique:tb_tid,ip_address',
+            ],$messages);
+        }
+
+        if($request->input('sn_mini_pc') != null) {
+            $validator = Validator::make($request->all(),[
+                'sn_mini_pc' => 'required|unique:tb_tid,sn_mini_pc',
+            ],$messages);
+        }
+
+        if($validator->fails()) {
+            Alert::error('Cek kembali pengisian form, terima kasih !');
+            return redirect()->route('admin.device.create')->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+        DB::beginTransaction();
+
+        TbTid::insert([
+            'tid' => $request->input('tid'),
+            'ip_address' => $request->input('ip_address'),
+            'sn_mini_pc' => $request->input('sn_mini_pc'),
+            'location_id' => $request->input('location_id'),
+        ]);
+
+        DB::commit();
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.device.create');
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.device.create');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.device.create');
+
+    } catch (PDOException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.device.create');
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.device.create');
+        
+    }
+
+        Alert::success('Sukses', 'Device berhasil ditambahkan.');
+        return redirect()->route('admin.device.index');
+    }
+
+    public function select2Location(Request $request) {
+        $search = $request->search;
+
+        if($search) {
+            $locations = TbLocation::join('tb_regional_office as regional_office', 'regional_office.id', '=', 'tb_location.regional_office_id')
+                            ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'tb_location.kc_supervisi_id')
+                            ->join('tb_branch as branch', 'branch.id', '=', 'tb_location.branch_id')
+                            ->select('regional_office.regional_office_name',
+                                                 'kc_supervisi.kc_supervisi_name',
+                                                 'branch.branch_name',
+                                                 'tb_location.address',
+                                                 'tb_location.postal_code',
+                                                 'tb_location.created_at',
+                                                 'tb_location.id')
+                            ->where('regional_office.regional_office_name','LIKE',"%{$search}%")
+                            ->orWhere('kc_supervisi.kc_supervisi_name','LIKE',"%{$search}%")
+                            ->orWhere('branch.branch_name','LIKE',"%{$search}%")
+                            ->orWhere('tb_location.address','LIKE',"%{$search}%")
+                            ->orWhere('tb_location.postal_code','LIKE',"%{$search}%")
+                            ->limit(100)
+                            ->get();
+        } else {
+            $locations = TbLocation::join('tb_regional_office as regional_office', 'regional_office.id', '=', 'tb_location.regional_office_id')
+                            ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'tb_location.kc_supervisi_id')
+                            ->join('tb_branch as branch', 'branch.id', '=', 'tb_location.branch_id')
+                            ->select('regional_office.regional_office_name',
+                                                 'kc_supervisi.kc_supervisi_name',
+                                                 'branch.branch_name',
+                                                 'tb_location.address',
+                                                 'tb_location.postal_code',
+                                                 'tb_location.created_at',
+                                                 'tb_location.id')
+                            ->limit(100)
+                            ->get();
+        }
+
+        $response = array();
+            foreach($locations as $location){
+                $response[] = array(
+                    "id"=> $location->id,
+                    "text"=> $location->regional_office_name . ' - ' . $location->kc_supervisi_name . ' - ' . $location->branch_name . ' - ' . $location->address . ' - ' . $location->postal_code
+                );
+            }
+
+        return response()->json($response);
+    }
+
 }
