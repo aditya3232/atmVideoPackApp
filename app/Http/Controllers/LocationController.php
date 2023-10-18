@@ -3,8 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbLocation;
-
+use App\Models\TbRegionalOffice;
+use App\Models\TbKcSupervisi;
+use App\Models\TbBranch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class LocationController extends Controller
 {
@@ -130,4 +139,160 @@ class LocationController extends Controller
         return response()->json($json_data);
 
     }
+
+    public function create() {
+        return view('mazer_template.admin.form_location.create');
+    }
+
+    public function store(Request $request) {
+        $messages = [
+        'required' => ':attribute wajib diisi.',
+        'min' => ':attribute harus diisi minimal :min karakter.',
+        'max' => ':attribute harus diisi maksimal :max karakter.',
+        'size' => ':attribute harus diisi tepat :size karakter.',
+        'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'regional_office_id' => 'required',
+            'kc_supervisi_id' => 'required',
+            'branch_id' => 'required',
+            'address' => 'required',
+            'postal_code' => 'required',
+        ],$messages);
+
+        // if input no_card not null then must unique, but when null or string '' then not unique
+        if($request->input('branch_id') != null) {
+            $validator = Validator::make($request->all(),[
+                'branch_id' => 'required|unique:tb_location,branch_id',
+            ],$messages);
+        }
+
+        if($validator->fails()) {
+            Alert::error('Cek kembali pengisian form, terima kasih !');
+            return redirect()->route('admin.location.create')->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+        DB::beginTransaction();
+
+        TbLocation::insert([
+            'regional_office_id' => $request->input('regional_office_id'),
+            'kc_supervisi_id' => $request->input('kc_supervisi_id'),
+            'branch_id' => $request->input('branch_id'),
+            'address' => $request->input('address'),
+            'postal_code' => $request->input('postal_code'),
+        ]);
+
+        DB::commit();
+
+    } catch (\Illuminate\Database\QueryException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.location.create');
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.location.create');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.location.create');
+
+    } catch (PDOException $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.location.create');
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Alert::error($e->getMessage());
+        return redirect()->route('admin.location.create');
+        
+    }
+
+        Alert::success('Sukses', 'Location berhasil ditambahkan.');
+        return redirect()->route('admin.location.index');
+    }
+
+    public function select2RegionalOffice(Request $request) {
+        $search = $request->search;
+
+        if($search) {
+            $regionalOffices = TbRegionalOffice::select('id', 'regional_office_name')
+                            ->where('regional_office_name', 'LIKE', "%{$search}%")
+                            ->limit(100)
+                            ->get();
+        } else {
+            $regionalOffices = TbRegionalOffice::select('id', 'regional_office_name')
+                            ->limit(100)
+                            ->get();
+        }
+
+        $response = array();
+            foreach($regionalOffices as $regionalOffice){
+                $response[] = array(
+                    "id"=> $regionalOffice->id,
+                    "text"=> $regionalOffice->regional_office_name
+                );
+            }
+
+        return response()->json($response);
+    }
+
+    public function select2KCSupervisi(Request $request) {
+        $search = $request->search;
+
+        if($search) {
+            $kcSupervisis = TbKcSupervisi::select('id', 'kc_supervisi_name')
+                            ->where('kc_supervisi_name', 'LIKE', "%{$search}%")
+                            ->limit(100)
+                            ->get();
+        } else {
+            $kcSupervisis = TbKcSupervisi::select('id', 'kc_supervisi_name')
+                            ->limit(100)
+                            ->get();
+        }
+
+        $response = array();
+            foreach($kcSupervisis as $kcSupervisi){
+                $response[] = array(
+                    "id"=> $kcSupervisi->id,
+                    "text"=> $kcSupervisi->kc_supervisi_name
+                );
+            }
+
+        return response()->json($response);
+    }
+
+    public function select2Branch(Request $request) {
+        $search = $request->search;
+
+        if($search) {
+            $branchs = TbBranch::select('id', 'branch_name')
+                            ->where('branch_name', 'LIKE', "%{$search}%")
+                            ->limit(100)
+                            ->get();
+        } else {
+            $branchs = TbBranch::select('id', 'branch_name')
+                            ->limit(100)
+                            ->get();
+        }
+
+        $response = array();
+            foreach($branchs as $branch){
+                $response[] = array(
+                    "id"=> $branch->id,
+                    "text"=> $branch->branch_name
+                );
+            }
+
+        return response()->json($response);
+    }
+
+    
+
+
 }

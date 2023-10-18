@@ -176,6 +176,9 @@ Route::group(['prefix' => 'admin/location', 'as' => 'admin.location.', 'middlewa
     Route::get('/edit/{id}', [LocationController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [LocationController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [LocationController::class, 'destroy'])->name('destroy');
+    Route::post('/select2regionaloffice', [LocationController::class, 'select2RegionalOffice'])->name('select2regionaloffice');
+    Route::post('/select2kcsupervisi', [LocationController::class, 'select2KcSupervisi'])->name('select2kcsupervisi');
+    Route::post('/select2branch', [LocationController::class, 'select2Branch'])->name('select2branch');
 });
 
 // Regional Office

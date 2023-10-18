@@ -68,3 +68,81 @@
 
 </script>
 
+{{-- select2 regional office in form location --}}
+<script>
+    $(document).ready(function () {
+        $(".select2-form-location-regional-office").select2({
+            ajax: {
+                url: "{{ route('admin.location.select2regionaloffice') }}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
+{{-- select2 kc supervisi in form location --}}
+<script>
+    $(document).ready(function () {
+        $(".select2-form-location-kc-supervisi").select2({
+            ajax: {
+                url: "{{ route('admin.location.select2kcsupervisi') }}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
+{{-- select2 branch in form location --}}
+<script>
+    $(document).ready(function () {
+        $(".select2-form-location-branch").select2({
+            ajax: {
+                url: "{{ route('admin.location.select2branch') }}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>
+
