@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbTid;
+use App\Models\TbStatusMc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
@@ -22,8 +23,6 @@ class StreamingCctvController extends Controller
     }
 
     public function streamingCctv($id) {
-        $stream_data = null; // Initialize it with a default value.
-
         try {
             $data = TbTid::findOrFail($id);
 
@@ -39,6 +38,12 @@ class StreamingCctvController extends Controller
                             'tb_tid.id')
                         ->where('tb_tid.id', $data->id)
                         ->get();
+
+            $get_status_mc = TbStatusMc::where('tid_id', $data->id)
+                                        // where latest date_time
+                                        ->orderBy('date_time', 'desc')
+                                        ->first();
+
 
         } catch (\Illuminate\Database\QueryException $e) {
             Alert::error('Gagal masuk halaman streaming!');
@@ -57,7 +62,7 @@ class StreamingCctvController extends Controller
             return redirect()->route('admin.streamingcctv.index');
         }
 
-        return view('mazer_template.admin.form_streaming_cctv.streaming', compact('get_data_tb_mcu_id'));
+        return view('mazer_template.admin.form_streaming_cctv.streaming', compact('get_data_tb_mcu_id','get_status_mc'));
     }
 
 
