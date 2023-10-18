@@ -39,7 +39,8 @@ class LocationController extends Controller
 
         $totalFiltered = $totalData; 
 
-        $limit = $request->input('length');
+        // $limit = $request->input('length');
+        $limit = 100;
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
