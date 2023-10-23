@@ -24,6 +24,7 @@
             <div class="card-body">
                 <div class="table-responsive mt-4 mb-4" style="width: 100%;">
                     <table class="table table-hover" id="form_human_detection" style="border-collapse: collapse; width: 100%;">
+                        {{-- <table class="table table-hover" id="table_client_side" style="border-collapse: collapse; width: 100%;"> --}}
                         <thead>
                             <tr>
                                 <th>No</th>

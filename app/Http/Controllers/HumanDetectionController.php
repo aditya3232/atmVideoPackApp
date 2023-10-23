@@ -3,14 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\TbHumanDetection;
-
+use App\Models\TbTid;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use PDOException;
+use Throwable;
 
 class HumanDetectionController extends Controller
 {
     //index
-    public function index()
+    public function index(Request $request)
     {
+        $client = new Client();
+        
+        // check this connection http://localhost:3636/api/atmvideopack/v1/humandetection/getall
+        $res = $client->request('POST', 'http://127.0.0.1:3636/api/atmvideopack/v1/humandetection/getall', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'x-api-key' => 'YAHYAAJA'
+            ]
+        ]);
+
+        // human detection from elastic join with location
+        $human_detection = TbTid::join('tb_location as location', 'location.id', '=', 'tb_tid.location_id')
+            ->join('tb_regional_office as regional_office', 'regional_office.id', '=', 'location.regional_office_id')
+            ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
+            ->join('tb_branch as branch', 'branch.id', '=', 'location.branch_id')
+            ->select('tb_tid.tid',
+                'regional_office.regional_office_name',
+                'kc_supervisi.kc_supervisi_name',
+                'branch.branch_name')
+            ->where('tb_tid.id', '=', $tid_id)
+            ->get();
+
+        dd($res);
+
+
+    
         return view('mazer_template.admin.form_human_detection.index');
     }
 
@@ -39,7 +73,8 @@ class HumanDetectionController extends Controller
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value')))
-        {            
+        {
+                        
             $FormTbHumanDetections = TbHumanDetection::join('tb_tid as tid', 'tid.id', '=', 'tb_human_detection.tid_id')
                         ->join('tb_location as location', 'location.id', '=', 'tid.location_id')
                         ->join('tb_regional_office as regional_office', 'regional_office.id', '=', 'location.regional_office_id')
