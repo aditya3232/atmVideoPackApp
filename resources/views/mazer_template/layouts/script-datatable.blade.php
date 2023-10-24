@@ -1097,6 +1097,66 @@
     });
 
 </script>
+<script>
+    $(document).ready(function () {
+        $('#form_human_detection_client_side').DataTable({
+            processing: true,
+            serverSide: false,
+            searching: false,
+            language: {
+                paginate: {
+                    previous: '&laquo;',
+                    next: '&raquo;'
+                },
+                info: "_START_ to _END_ of _TOTAL_ results",
+                lengthMenu: "show _MENU_ per page" // Change "entries" to "per page"
+            },
+        });
+        // search change form input more rounded
+        $('.dataTables_filter input[type="search"]').css({
+            'border-radius': '15px',
+            'border': '1px solid #ebebeb',
+            'padding-left': '20px',
+            'padding-right': '20px',
+            'padding-top': '5px',
+            'padding-bottom': '5px',
+            'margin-bottom': '10px',
+            'margin-top': '10px',
+
+            'background-image': 'url("{{ asset('assets/images/samples/search-png.png') }}")',
+            'background-repeat': 'no-repeat',
+            'background-position': 'right',
+            'background-size': '25px',
+
+        });
+
+        // select show with border radius
+        $('.dataTables_length select').css({
+            'border-radius': '15px',
+            'border': '1px solid #ebebeb',
+            'padding-left': '20px',
+            'padding-right': '20px',
+            'padding-top': '5px',
+            'padding-bottom': '5px',
+            'margin-bottom': '10px',
+            'margin-top': '10px',
+            // add more wide select
+            'width': '80px',
+            // text arial
+            'font-family': 'Arial',
+        });
+
+        $('.dataTables_wrapper').css({
+            'color': 'black',
+        });
+
+        $('.dataTables_wrapper').find('tr').css({
+            'color': 'black',
+        });
+
+    });
+
+</script>
 
 {{-- vandal detection --}}
 <script>

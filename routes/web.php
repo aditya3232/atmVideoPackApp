@@ -120,6 +120,8 @@ Route::group(['prefix' => 'admin/humandetection', 'as' => 'admin.humandetection.
     Route::get('/edit/{id}', [HumanDetectionController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [HumanDetectionController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [HumanDetectionController::class, 'destroy'])->name('destroy');
+    Route::post('/select2tid', [HumanDetectionController::class, 'select2Tid'])->name('select2tid');
+    Route::get('/searchelastic', [HumanDetectionController::class, 'searchElastic'])->name('searchelastic');
 });
 
 // vandal detection
