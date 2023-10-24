@@ -210,3 +210,38 @@
     });
 
 </script>
+
+{{-- select2 tid in form vandal detection --}}
+<script>
+    $(document).ready(function () {
+        $(".select2-form-vandalDetection-tid").select2({
+            ajax: {
+                url: "{{ route('admin.vandaldetection.select2tid') }}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+
+</script>
+
+{{-- select2 person in form vandal detection --}}
+<script>
+    $(document).ready(function () {
+        $('.select2-form-vandalDetection-person').select2();
+    });
+
+</script>

@@ -43,7 +43,7 @@ class HumanDetectionController extends Controller
         try {
             
             // api elastic
-            $response = $client->request('POST', env('API_URL'), [
+            $response = $client->request('POST', env('API_HUMAN_DETECTION_URL'), [
                     'headers' => [
                     'x-api-key' => 'YAHYAAJA',
                     ],
@@ -86,7 +86,7 @@ class HumanDetectionController extends Controller
                     'date_time' => $human_detection_elastic->date_time,
                     'person' => $human_detection_elastic->person,
                     'file_name_capture_human_detection' => $human_detection_elastic->file_name_capture_human_detection,
-                    'img_url' => "http://127.0.0.1:9000/atmvideopack-app/human-detection/" . $human_detection_elastic->file_name_capture_human_detection
+                    'img_url' =>  env('MINIO_HUMAN_DETECTION_URL') . $human_detection_elastic->file_name_capture_human_detection
 
                 ];
 

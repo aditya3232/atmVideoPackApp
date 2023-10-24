@@ -133,6 +133,8 @@ Route::group(['prefix' => 'admin/vandaldetection', 'as' => 'admin.vandaldetectio
     Route::get('/edit/{id}', [VandalDetectionController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [VandalDetectionController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [VandalDetectionController::class, 'destroy'])->name('destroy');
+    Route::post('/select2tid', [VandalDetectionController::class, 'select2Tid'])->name('select2tid');
+    Route::get('/searchelastic', [VandalDetectionController::class, 'searchElastic'])->name('searchelastic');
 });
 
 // Streaming Cctv
