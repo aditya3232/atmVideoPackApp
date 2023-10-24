@@ -60,7 +60,39 @@
                                     </td>
                                     <td>{{ $data['date_time'] }}</td>
                                     <td>
-                                        tes
+                                        <button title="Detail Image" type="button" class="btn" style="border-radius: 12px; background-color: #0000FF; color: white;" data-bs-toggle="modal"
+                                            data-bs-target="#modalDetailImage{{ $loop->index }}">
+                                            <i class="bi bi-image" style="font-size: 13px; font-weight: bold"></i>
+                                        </button>
+                                        {{-- button download image secara langsung --}}
+                                        <a href="{{ $data['img_url'] }}" download="{{ $data['file_name_capture_human_detection'] }}" title="Download Image" type="button" class="btn"
+                                            style="border-radius: 12px; background-color: #0000FF; color: white;">
+                                            <i class="bi bi-download" style="font-size: 13px; font-weight: bold"></i>
+                                        </a>
+
+                                        {{-- modal detail image --}}
+                                        <div class="modal fade" id="modalDetailImage{{ $loop->index }}" tabindex="-1" aria-labelledby="modalDeleteUserLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-body text-center no-copy">
+                                                        <div>
+                                                            <i class="bi bi-image" style="font-size: 50px; font-weight: bold; color: rgba(0, 0, 255, 0.4);"></i>
+                                                        </div>
+                                                        <div class="mb-4 mt-2">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md">
+                                                                            <img src="{{ $data['img_url'] }}" alt="{{ $data['file_name_capture_human_detection'] }}" width="100%" height="100%">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -144,169 +176,63 @@
         </div>
     </div>
 
-    {{-- modal here --}}
-    <div class="modal fade" id="modalDeleteUser" tabindex="-1" aria-labelledby="modalDeleteUserLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-body text-center no-copy">
-                    <div>
-                        <i class="bi bi-exclamation-circle" style="font-size: 100px; color:rgba(255, 165, 0, 0.4);"></i>
-                    </div>
+    {{-- script delete card --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                    <div class="mb-4 mt-2">
-                        <h2 class="text-primary">Delete User!</h2>
-                        <span class='badge bg-primary mb-2' style='border-radius: 12px;'>
-                            <text id="data_user_name" style="font-size: 16px">
-                        </span>
-                    </div>
+    <script>
+        function changeToLoadingFormFilterHumanDetection() {
+            var btn = document.getElementById('submit-filter-humanDetection');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            btn.disabled = true;
 
-                    <div>
-                        <p>Apakah anda yakin ingin delete user?</p>
-                    </div>
+            // Simulating a delay of 2 seconds for demonstration purposes
+            setTimeout(function () {
+                // Enable the button and change the text back to "Login" after the delay
+                btn.disabled = false;
+                btn.innerHTML = 'Submit';
 
-                    <div>
-                        <button class="btn" id="btn-delete-user" style="border-radius:12px; background-color:#FF0000; color:white;"> Yes, delete it!</button>
-                        <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal" style="border-radius:12px;"><i class="bi bi-x-circle"></i> Cancel</button>
-                    </div>
+                // Submit the form
+                submitFormFilterHumanDetection();
+            }, 250);
+        }
 
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
-{{-- script delete card --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    function changeToLoadingFormFilterHumanDetection() {
-        var btn = document.getElementById('submit-filter-humanDetection');
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-        btn.disabled = true;
-
-        // Simulating a delay of 2 seconds for demonstration purposes
-        setTimeout(function () {
-            // Enable the button and change the text back to "Login" after the delay
-            btn.disabled = false;
-            btn.innerHTML = 'Submit';
+        function submitFormFilterHumanDetection() {
+            // Get the form element
+            var form = document.getElementById('form-filter-humanDetection');
 
             // Submit the form
-            submitFormFilterHumanDetection();
-        }, 250);
-    }
+            form.submit();
+        }
 
-    function submitFormFilterHumanDetection() {
-        // Get the form element
-        var form = document.getElementById('form-filter-humanDetection');
+    </script>
 
-        // Submit the form
-        form.submit();
-    }
-
-</script>
-
-<script>
-    //  btn reset request to null with id='btn-reset-filter-humanDetection' and reload page
-    $('#btn-reset-filter-humanDetection').on('click', function () {
-        $('#select2-form-humanDetection-tid').val(null).trigger('change');
-        $('#input-start-date-time-in-log-accepted').val(null);
-        $('#input-end-date-time-in-log-accepted').val(null);
-        $('#select2-form-humanDetection-person').val(null).trigger('change');
-    });
-
-    // changeToLoadingFormResetFilterHumanDetection
-    function changeToLoadingFormResetFilterHumanDetection() {
-        var btn = document.getElementById('btn-reset-filter-humanDetection');
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-        btn.disabled = true;
-
-        // Simulating a delay of 2 seconds for demonstration purposes
-        setTimeout(function () {
-            // Enable the button and change the text back to "Login" after the delay
-            btn.disabled = false;
-            btn.innerHTML = 'Reset';
-
-            // Submit the form
-            $('#form-filter-humanDetection').submit();
-        }, 250);
-    }
-
-</script>
-
-<script>
-    $(document).ready(function () {
-
-        var userId; // Declare entryId variable in an accessible scope
-
-        $('#modalDeleteUser').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var userId = button.data('tb-user-id');
-            var userName = button.data('user-name');
-
-            // Attach the entryId value to the delete button
-            $('#btn-delete-user').data('user-id', userId);
-
-            $('#data_user_name').text(userName);
+    <script>
+        //  btn reset request to null with id='btn-reset-filter-humanDetection' and reload page
+        $('#btn-reset-filter-humanDetection').on('click', function () {
+            $('#select2-form-humanDetection-tid').val(null).trigger('change');
+            $('#input-start-date-time-in-log-accepted').val(null);
+            $('#input-end-date-time-in-log-accepted').val(null);
+            $('#select2-form-humanDetection-person').val(null).trigger('change');
         });
 
-        $('#btn-delete-user').on('click', function (event) {
-            // Get the entryId value from the button's data attribute
-            var userId = $(this).data('user-id');
+        // changeToLoadingFormResetFilterHumanDetection
+        function changeToLoadingFormResetFilterHumanDetection() {
+            var btn = document.getElementById('btn-reset-filter-humanDetection');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            btn.disabled = true;
 
-            var action = "{{ route('admin.users.destroy', '') }}" + '/' + userId;
-            console.log(action);
-            let token = $("meta[name='csrf-token']").attr("content");
+            // Simulating a delay of 2 seconds for demonstration purposes
+            setTimeout(function () {
+                // Enable the button and change the text back to "Login" after the delay
+                btn.disabled = false;
+                btn.innerHTML = 'Reset';
 
-            $.ajax({
-                type: 'POST',
-                url: action,
-                data: {
-                    "_token": token,
-                    "_method": "DELETE" // Use method spoofing for DELETE
-                },
-                success: function (response) {
-                    console.log('User berhasil dihapus!', response);
+                // Submit the form
+                $('#form-filter-humanDetection').submit();
+            }, 250);
+        }
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'User berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+    </script>
 
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeleteUser').modal('hide');
-                },
-                error: function (error) {
-
-                    console.error('User gagal dihapus!', error);
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'User gagal dihapus!',
-                        text: 'Silahkan refresh halaman!',
-                    });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeleteUser').modal('hide');
-                }
-            });
-        });
-
-
-    });
-
-</script>
-
-{{-- script btn-filter-humanDetection --}}
-
-@endsection
+    @endsection
