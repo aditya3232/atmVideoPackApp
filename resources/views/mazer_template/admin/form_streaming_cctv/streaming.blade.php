@@ -33,8 +33,8 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">TID</h6>
-                            @foreach($get_data_tb_mcu_id as $item)
-                                <h6 class="font-extrabold mb-0">{{ $item->tid }}</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['tid'] }}</h6>
                             @endforeach
                         </div>
                     </div>
@@ -54,8 +54,8 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Regional Office</h6>
-                            @foreach($get_data_tb_mcu_id as $item)
-                                <h6 class="font-extrabold mb-0">{{ $item->regional_office_name }}</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['regional_office_name'] }}</h6>
                             @endforeach
                         </div>
                     </div>
@@ -75,8 +75,8 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">KC Supervisi</h6>
-                            @foreach($get_data_tb_mcu_id as $item)
-                                <h6 class="font-extrabold mb-0">{{ $item->kc_supervisi_name }}</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['kc_supervisi_name'] }}</h6>
                             @endforeach
                         </div>
                     </div>
@@ -96,8 +96,8 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="text-muted font-semibold">Branch</h6>
-                            @foreach($get_data_tb_mcu_id as $item)
-                                <h6 class="font-extrabold mb-0">{{ $item->branch_name }}</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['branch_name'] }}</h6>
                             @endforeach
                         </div>
                     </div>
@@ -125,7 +125,9 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <h6 class="text-muted font-semibold">Status Sinyal</h6>
-                                                <h6 class="font-extrabold mb-0">{{ $get_status_mc->status_signal }}</h6>
+                                                @foreach($status_mc_detection as $data)
+                                                    <h6 class="font-extrabold mb-0">{{ $data['status_signal'] }}</h6>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +142,9 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <h6 class="text-muted font-semibold">Status Penyimpanan</h6>
-                                                <h6 class="font-extrabold mb-0">{{ $get_status_mc->status_storage }}</h6>
+                                                @foreach($status_mc_detection as $data)
+                                                    <h6 class="font-extrabold mb-0">{{ $data['status_storage'] }}</h6>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +159,9 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <h6 class="text-muted font-semibold">Status Ram</h6>
-                                                <h6 class="font-extrabold mb-0">{{ $get_status_mc->status_ram }}</h6>
+                                                @foreach($status_mc_detection as $data)
+                                                    <h6 class="font-extrabold mb-0">{{ $data['status_ram'] }}</h6>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -170,15 +176,16 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <h6 class="text-muted font-semibold">Status CPU</h6>
-                                                <h6 class="font-extrabold mb-0">{{ $get_status_mc->status_cpu }}</h6>
+                                                @foreach($status_mc_detection as $data)
+                                                    <h6 class="font-extrabold mb-0">{{ $data['status_cpu'] }}</h6>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td style="width: 75%;">
-                                    @foreach($get_data_tb_mcu_id as $item)
-                                        <iframe src="{{ 'http://127.0.0.1:3636/api/atmvideopack/v1/device/getstreamvideo/' . $item->id }}" width="100%" height="500px" frameborder="0"
-                                            allowfullscreen></iframe>
+                                    @foreach($status_mc_detection as $data)
+                                        <iframe src="{{ env('STREAMING_CCTV_URL') . $data['tid_id'] }}" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
                                     @endforeach
                                 </td>
                             </tr>
