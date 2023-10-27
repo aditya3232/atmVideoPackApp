@@ -95,27 +95,27 @@ class HumanDetectionController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             // Alert::error($e->getMessage());
             Alert::error('QueryException !');
-            return redirect()->route('admin.humandetection.index');
+            return redirect()->route('admin.index');
         
         } catch (ModelNotFoundException $e) {
             // Alert::error($e->getMessage());
             Alert::error('Modul Not Found Exception !');
-            return redirect()->route('admin.humandetection.index');
+            return redirect()->route('admin.index');
 
         } catch (\Exception $e) {
             // Alert::error($e->getMessage());
             Alert::error('Data not found !');
-            return redirect()->route('admin.humandetection.index');
+            return redirect()->route('admin.index');
 
         } catch (PDOException $e) {
             // Alert::error($e->getMessage());
             Alert::error('PDO Exception !');
-            return redirect()->route('admin.humandetection.index');
+            return redirect()->route('admin.index');
 
         } catch (Throwable $e) {
             // Alert::error($e->getMessage());
             Alert::error('Throwable !');
-            return redirect()->route('admin.humandetection.index');
+            return redirect()->route('admin.index');
             
         }
 

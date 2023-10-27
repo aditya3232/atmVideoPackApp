@@ -37,8 +37,7 @@
                 @endcan
 
                 @can('sidebarParentHumanDetection', App\Models\Sidebar::class)
-                    <li
-                        class="{{ (request()->is('admin/humandetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                    <li class="{{ (request()->is('admin/humandetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.humandetection.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.human-detection')
                             <span>Human Detection</span>
@@ -47,8 +46,7 @@
                 @endcan
 
                 @can('sidebarParentVandalDetection', App\Models\Sidebar::class)
-                    <li
-                        class="{{ (request()->is('admin/vandaldetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
+                    <li class="{{ (request()->is('admin/vandaldetection')) ? 'sidebar-item active' : 'sidebar-item' }}">
                         <a href="{{ route('admin.vandaldetection.index') }}" class='sidebar-link'>
                             @include('mazer_template.layouts.icons.vandal-detection')
                             <span>Vandal Detection</span>

@@ -158,6 +158,7 @@ Route::group(['prefix' => 'admin/downloadplayback', 'as' => 'admin.downloadplayb
     Route::get('/edit/{id}', [DownloadPlaybackController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [DownloadPlaybackController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [DownloadPlaybackController::class, 'destroy'])->name('destroy');
+    Route::post('/select2tid', [DownloadPlaybackController::class, 'select2Tid'])->name('select2tid');
 });
 
 // Device
