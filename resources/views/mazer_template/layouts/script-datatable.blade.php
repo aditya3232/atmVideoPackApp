@@ -62,7 +62,7 @@
         });
 
         // change template pagination
-        $('#permissions').DataTable().on('draw.dt', function () {
+        $('#table_client_side').DataTable().on('draw.dt', function () {
             $('.dataTables_paginate > .pagination > li > a').css({
                 'border-radius': '100%', // Make it circular
             });

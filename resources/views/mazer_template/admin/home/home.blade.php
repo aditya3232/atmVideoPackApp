@@ -24,7 +24,7 @@
     </div>
 
     {{-- total all about --}}
-    <div class="page-content">
+    {{-- <div class="page-content">
         <section class="row">
             <div class="col-6 col-lg-3 col-md-6">
                 <div class="card">
@@ -34,76 +34,76 @@
                                 <div class="stats-icon purple">
                                     <a href="" class="">
                                         <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <h6 class="text-muted font-semibold">Device Up</h6>
-                                <h6 class="font-extrabold mb-0"></h6>
-                            </div>
-                        </div>
+    </a>
+</div>
+</div>
+<div class="col-md-8">
+    <h6 class="text-muted font-semibold">Device Up</h6>
+    <h6 class="font-extrabold mb-0"></h6>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-6 col-lg-3 col-md-6">
+    <div class="card">
+        <div class="card-body px-3 py-4-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stats-icon blue">
+                        <a href="" class="">
+                            <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-3 py-4-5">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="stats-icon blue">
-                                    <a href="" class="">
-                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <h6 class="text-muted font-semibold">Device Down</h6>
-                                <h6 class="font-extrabold mb-0"></h6>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-8">
+                    <h6 class="text-muted font-semibold">Device Down</h6>
+                    <h6 class="font-extrabold mb-0"></h6>
                 </div>
             </div>
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-3 py-4-5">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="stats-icon green">
-                                    <a href="" class="">
-                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.human-detection-white')->render()) }}" alt="" width="25">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <h6 class="text-muted font-semibold">Human Detection</h6>
-                                <h6 class="font-extrabold mb-0"></h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-3 py-4-5">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="stats-icon red">
-                                    <a href="" class="">
-                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.vandal-detection-white')->render()) }}" alt="" width="25">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <h6 class="text-muted font-semibold">Vandal Detection</h6>
-                                <h6 class="font-extrabold mb-0"></h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </div>
+</div>
+<div class="col-6 col-lg-3 col-md-6">
+    <div class="card">
+        <div class="card-body px-3 py-4-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stats-icon green">
+                        <a href="" class="">
+                            <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.human-detection-white')->render()) }}" alt="" width="25">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h6 class="text-muted font-semibold">Human Detection</h6>
+                    <h6 class="font-extrabold mb-0"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-6 col-lg-3 col-md-6">
+    <div class="card">
+        <div class="card-body px-3 py-4-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stats-icon red">
+                        <a href="" class="">
+                            <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.vandal-detection-white')->render()) }}" alt="" width="25">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h6 class="text-muted font-semibold">Vandal Detection</h6>
+                    <h6 class="font-extrabold mb-0"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</div> --}}
 
 </div>
 
