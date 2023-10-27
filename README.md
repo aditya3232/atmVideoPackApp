@@ -1,13 +1,18 @@
 
-# Gatewatch App - DigitalMinds
+# Atm Video Pack App - DigitalMinds
 
-Aplikasi IOT dengan pengawasan pintu dan cctv yang realtime
+ATMVideopack System adalah solusi kompak yang dirancang khusus untuk memantau dan
+mengompresi aliran video dari CCTV dengan efisiensi tinggi. Mini PC canggih ini membantu
+Anda mengawasi keamanan dengan mudah dan menyimpan ruang penyimpanan yang
+berharga dengan teknologi kompresi canggih. Dengan desain yang ringkas dan kemampuan
+andalnya, ATMVideopack System adalah pilihan terbaik untuk memastikan keandalan
+pemantauan CCTV Perbankan Anda.
 
 
 ## Authors
 
 - [@aditya3232](https://github.com/aditya3232)
-
+- [@myahyasa](https://github.com/myahyasa)
 - [@DigitalMindsTechnology](https://github.com/DigitalMindsTechnology)
 
 
@@ -23,9 +28,17 @@ Aplikasi IOT dengan pengawasan pintu dan cctv yang realtime
 
 ## Tech Stack
 
-**Client:** Laravel Framework 10.14.1, Go 1.18.1, TailwindCSS, Bootstrap 5
+**Website:** Laravel Framework 10.14.1
 
-**Storage:** Minio
+**Backend:** Go 1.21.1 
+
+**CSS:** TailwindCSS & Bootstrap 5
+
+**Storage:** Minio latest
+
+**Queue:** Rabbit MQ 3.12.6
+
+**Search:** ElasticSearch 7
 
 **Database:** Mysql
 
@@ -35,30 +48,136 @@ Aplikasi IOT dengan pengawasan pintu dan cctv yang realtime
 [MIT](https://choosealicense.com/licenses/mit/)
 
 
-## 🚀 About Me
-I'm a fullstack laravel & golang developer...
 
+# Catatan! 👋
 
-# Hi, I'm Muhammad Aditya! 👋
+[Servis berserta portnya]
+- atmVideoPack-services port : 3636
+- atmVideoPack-humanDetection-publisherRmq-services port : 3333
+- atmVideoPack-humanDetection-consumerRmq-services port : optional
+- atmVideoPack-vandalDetection-publisherRmq-services port : 3434
+- atmVideoPack-vandalDetection-consumerRmq-services port : optional
+- atmVideoPack-statusMcDetection-publisherRmq-services port : 3535
+- atmVideoPack-statusMcDetection-consumerRmq-services port : optional
 
+# API Spec yang Digunakan Mesin
 
-## Documentation
+## 1 Publisher Human Detection
 
-[How to Use]
-- masukkan data kantor yang ingin akan diinstalasi akses door
-- masukkan data user yang akan menggunakan, beserta informasi asal kantor
-- masukkan data door_token di menu door access
-- kemudian user dapat mendaftarkan kartu baru nya melalui mcu
-- setelah kartu didaftarkan kartu akan otomatis terdaftar di kantor mana sesuai lokasi kantor mcu
-- kemudian kartu dapat dipasangkan dengan pintu aksesnya di menu card
-- kemudian user baru dapat dipasangkan dengan kartu mana yang akan digunakan
+Request :
+- Method : POST
+- Endpoint : `{{local}}:3333/publisher/atmvideopack/v1/humandetection/create`
+- Header :
+    - x-api-key :
+- Body (form-data) :
+    - tid : string, required
+    - date_time : string, required
+    - person : string, required
+    - file_capture_human_detection : string, required
+- Response :
 
-[Info]
-- proses pendaftaran baru, dan log accept atau reject card dapat dilihat dimenu log cards
-- untuk info mengenai jumlah: log, user door access, office, card, door dapat dilihat di menu dashboard
-- untuk setting user role permission website, dapat meunju menu settings admin
+```json 
+{
+    "meta": {
+        "message": "string",
+        "code": "integer",
+    },
+        "data":{
+            "tid": "string",
+            "date_time": "string",
+            "person": "string",  
+            "file_capture_human_detection": "string"  
+        }
+ }
+```
+## 2 Publisher Vandal Detection
 
+Request :
+- Method : POST
+- Endpoint : `{{local}}:3434/publisher/atmvideopack/v1/vandaldetection/create`
+- Header : 
+    - x-api-key : 
+- Body Body (form-data) :
+    - tid : string, required
+    - date_time : string, required
+    - person : string, required
+    - file_capture_vandal_detection : string, required
+- Response :
 
+```json 
+{
+    "meta": {
+        "message": "string",
+        "code": "integer",
+    },
+        "data" : {
+            "tid": "string",
+            "date_time": "string",
+            "person": "string",  
+            "file_capture_vandal_detection": "string"
+        }
+}
+```
+## 3 Publisher Status MC (Mini PC) Detection 
+
+Request :
+- Method : POST
+- Endpoint : `{{local}}:3535/publisher/atmvideopack/v1/statusmcdetection/create`
+- Header : 
+    - x-api-key : 
+- Body Body (form-data) :
+    - tid : string, required
+    - date_time : string, required
+    - status_signal : string, required
+    - status_storage : string, required
+    - status_ram : string, required
+    - status_cpu : string, required
+- Response :
+
+```json 
+{
+    "meta": {
+        "message": "string",
+        "code": "integer",
+    },
+        "data" : {
+            "tid": "string",
+            "date_time": "string",
+            "status_signal": "string",  
+            "status_storage": "string",
+            "status_ram": "string",
+            "status_cpu": "string"
+        }
+}
+```
+## 4 Add Device
+
+Request :
+- Method : POST
+- Endpoint : `{{local}}:3636/api/atmvideopack/v1/device/create`
+- Header : 
+    - x-api-key : 
+- Body Body (form-data) :
+    - tid : string, required, unique
+    - ip_address : string, required
+    - sn_mini_pc : string, required
+    - location_id : string
+- Response :
+
+```json 
+{
+    "meta": {
+        "message": "string",
+        "code": "integer",
+    },
+        "data" : {
+            "tid": "string",
+            "ip_address": "string",
+            "sn_mini_pc": "string",  
+            "location_id": "string",
+        }
+}
+```
 
 ## Appendix
 
