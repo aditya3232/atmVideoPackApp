@@ -40,9 +40,9 @@
                                 @foreach($download_playback as $data)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $data->filename }}</td>
+                                        <td>{{ $data['filename'] }}</td>
                                         <td>
-                                            <a href="{{ $data->url }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                                            <a href="{{ $data['url'] }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

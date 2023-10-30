@@ -92,7 +92,7 @@ class DownloadPlaybackController extends Controller
 
         // get request
         $tid = null;
-        if ($request->has('tid_id')) {
+        if ($request->has('tid')) {
             $tid = $request->tid;
         }
 
@@ -138,7 +138,7 @@ class DownloadPlaybackController extends Controller
         $response = array();
             foreach($tids as $tid){
                 $response[] = array(
-                    "id"=> $tid->id,
+                    "id"=> $tid->tid,
                     "text"=> $tid->tid
                 );
             }
