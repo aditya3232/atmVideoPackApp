@@ -119,6 +119,23 @@
                                             <div class="col-md-4">
                                                 <div class="stats-icon bg-info">
                                                     <a href="" class="">
+                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.time-history-white')->render()) }}" alt="" width="25">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Last Update</h6>
+                                                @foreach($status_mc_detection as $data)
+                                                    <h6 class="font-extrabold mb-0">{{ $data['date_time'] }}</h6>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon bg-info">
+                                                    <a href="" class="">
                                                         <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.signal-white')->render()) }}" alt="" width="25">
                                                     </a>
                                                 </div>
