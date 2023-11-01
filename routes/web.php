@@ -62,6 +62,12 @@ Route::get('/419', function () {
     return view('errors.419');
 })->name('419');
 
+// decrypt url
+Route::get('/decrypt/{encryptedUrl}', function ($encryptedUrl) {
+    $decodedUrl = base64_decode($encryptedUrl);
+    return redirect($decodedUrl);
+})->name('decryptUrl');
+
 // admin // dashboard
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent dashboard']], function() {
     Route::get('/', [AdminController::class, 'index'])->name('index');

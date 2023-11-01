@@ -105,112 +105,130 @@
             </div>
         </div>
     </section>
-    <section class="section">
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive mt-4 mb-4" style="width: 100%;">
-                    <table class="table table-hover" id="" style="border-collapse: collapse; width: 100%;">
-                        <thead>
-                            <tr>
-                                {{-- tes --}}
-                                <td style="width: 25%;">
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon bg-info">
-                                                    <a href="" class="">
-                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.time-history-white')->render()) }}" alt="" width="25">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Last Update</h6>
-                                                @foreach($status_mc_detection as $data)
-                                                    <h6 class="font-extrabold mb-0">{{ $data['date_time'] }}</h6>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon bg-info">
-                                                    <a href="" class="">
-                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.signal-white')->render()) }}" alt="" width="25">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Status Sinyal</h6>
-                                                @foreach($status_mc_detection as $data)
-                                                    <h6 class="font-extrabold mb-0">{{ $data['status_signal'] }}</h6>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon bg-secondary">
-                                                    <a href="" class="">
-                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.storage-white')->render()) }}" alt="" width="25">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Status Penyimpanan</h6>
-                                                @foreach($status_mc_detection as $data)
-                                                    <h6 class="font-extrabold mb-0">{{ $data['status_storage'] }}</h6>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon bg-warning">
-                                                    <a href="" class="">
-                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.memory-white')->render()) }}" alt="" width="25">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Status Ram</h6>
-                                                @foreach($status_mc_detection as $data)
-                                                    <h6 class="font-extrabold mb-0">{{ $data['status_ram'] }}</h6>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon bg-success">
-                                                    <a href="" class="">
-                                                        <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.cpu-white')->render()) }}" alt="" width="25">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Status CPU</h6>
-                                                @foreach($status_mc_detection as $data)
-                                                    <h6 class="font-extrabold mb-0">{{ $data['status_cpu'] }}</h6>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style="width: 75%;">
-                                    @foreach($status_mc_detection as $data)
-                                        <iframe src="{{ env('STREAMING_CCTV_URL') . $data['tid_id'] }}" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
-                                    @endforeach
-                                </td>
-                            </tr>
-                        </thead>
-                    </table>
+    <section class="row">
+        {{-- status mini pc --}}
+        <div class="col-6 col-lg-4 col-md-6">
+            <div class="card">
+                {{-- card title --}}
+                <div class="card-header bg-white border-0 pt-5">
+                    <h3 class="fs-1 text-center fw-bold">Status Mini PC</h3>
+                </div>
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-icon bg-info">
+                                <a href="" class="">
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.time-history-white')->render()) }}" alt="" width="25">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-muted font-semibold">Last Update</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['date_time'] }}</h6>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-icon bg-info">
+                                <a href="" class="">
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.signal-white')->render()) }}" alt="" width="25">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-muted font-semibold">Status Sinyal</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['status_signal'] }}</h6>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-icon bg-secondary">
+                                <a href="" class="">
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.storage-white')->render()) }}" alt="" width="25">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-muted font-semibold">Status Penyimpanan</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['status_storage'] }}</h6>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-icon bg-warning">
+                                <a href="" class="">
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.memory-white')->render()) }}" alt="" width="25">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-muted font-semibold">Status Ram</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['status_ram'] }}</h6>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-icon bg-success">
+                                <a href="" class="">
+                                    <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.cpu-white')->render()) }}" alt="" width="25">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="text-muted font-semibold">Status CPU</h6>
+                            @foreach($status_mc_detection as $data)
+                                <h6 class="font-extrabold mb-0">{{ $data['status_cpu'] }}</h6>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        {{-- live --}}
+
+        <div class="col-6 col-lg-8 col-md-6">
+            <div class="card">
+                <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                        {{-- live icon --}}
+                        <div class="col-md-12 text-left">
+                            <img src="/assets/images//samples/live.png" alt="" width="70px;">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="width: 100%;">
+                            <table class="table table-hover" id="" style="border-collapse: collapse; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 100%;">
+                                            @foreach($status_mc_detection as $data)
+                                                <iframe src="{{ env('STREAMING_CCTV_URL') . $data['tid_id'] }}" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     </section>
 
 </div>

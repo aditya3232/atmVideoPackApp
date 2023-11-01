@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert as Alert;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use PDOException;
@@ -20,20 +21,32 @@ class DownloadPlaybackController extends Controller
     {
         $client = new Client();
 
-        // convert $request->starthour_date & $request->endhour, from HH:MM to HH-MM
-        $starthour_date = str_replace(':', '-', $request->starthour_date);
-        $endhour = str_replace(':', '-', $request->endhour);
+        // format $request->start_date_time from this '2023-10-23T21:34' to this '2023-10-23 21:34:00'
+        $start_date_time = $request->start_date_time;
+        $end_date_time = $request->end_date_time;
+
+        if ($start_date_time !== null) {
+            $formattedStartDateTime = SupportCarbon::createFromFormat('Y-m-d\TH:i', $start_date_time)->format('Y-m-d H:i:s');
+        } else {
+            $formattedStartDateTime = null;
+        }
+
+        if ($end_date_time !== null) {
+            $formattedEndDateTime = SupportCarbon::createFromFormat('Y-m-d\TH:i', $end_date_time)->format('Y-m-d H:i:s');
+        } else {
+            $formattedEndDateTime = null;
+        }
 
         try {
-            $response = $client->request('POST', env('DOWNLOAD_CCTV_URL'), [
+            $response = $client->request('POST', env('API_DOWNLOAD_PLAYBACK_URL'), [
                 'headers' => [
                 'x-api-key' => 'YAHYAAJA',
                 ],
                 'form_params' => [
                     'tid' => $request->tid,
-                    'folder_date' => $request->folder_date, // diisi YYYY-MM-DD
-                    'starthour_date' => $starthour_date, // HH-MM
-                    'endhour' => $endhour, // HH-MM
+                    'date_time' => $request->date_time,
+                    'start_date' => $formattedStartDateTime,
+                    'end_date' => $formattedEndDateTime,
 
                 ],
             ]);
@@ -45,10 +58,18 @@ class DownloadPlaybackController extends Controller
             $download_playback = [];
 
             foreach ($download_playback_data as $data) {
+                $tid = $data->tid;
+                $date_modified = $data->date_modified;
+                $duration_minutes = $data->duration_minutes;
+                $file_size_bytes = $data->file_size_bytes;
                 $filename = $data->filename;
                 $url = $data->url;
 
                 $combined_data = [
+                    'tid' => $tid,
+                    'date_modified' => $date_modified,
+                    'duration_minutes' => $duration_minutes,
+                    'file_size_bytes' => $file_size_bytes,
                     'filename' => $filename,
                     'url' => $url,
                 ];
@@ -90,34 +111,11 @@ class DownloadPlaybackController extends Controller
             
         }
 
-        // get request
-        $tid = null;
-        if ($request->has('tid')) {
-            $tid = $request->tid;
-        }
-
-        $folder_date = null;
-        if ($request->has('folder_date')) {
-            $folder_date = $request->folder_date;
-        }
-
-        $starthour_date = null;
-        if ($request->has('starthour_date')) {
-            $starthour_date = $request->starthour_date;
-        }
-
-        $endhour = null;
-        if ($request->has('endhour')) {
-            $endhour = $request->endhour;
-        }
-
         return view('mazer_template.admin.form_download_playback.index', [
             'download_playback' => $download_playback,
-            'total_data' => $total_data,
-            'tid' => $tid,
-            'folder_date' => $folder_date,
-            'starthour_date' => $starthour_date,
-            'endhour' => $endhour,
+            'tid' => $request->tid,
+            'start_date_time' => $formattedStartDateTime,
+            'end_date_time' => $formattedEndDateTime,
         ]);
     }
 

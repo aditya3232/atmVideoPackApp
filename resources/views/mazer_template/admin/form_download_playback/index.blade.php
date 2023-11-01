@@ -32,6 +32,10 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>TID</th>
+                                    <th>Date Modified</th>
+                                    <th>Duration Minutes</th>
+                                    <th>File Size</th>
                                     <th>Nama File</th>
                                     <th>Action</th>
                                 </tr>
@@ -40,9 +44,16 @@
                                 @foreach($download_playback as $data)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $data['tid'] }}</td>
+                                        <td>{{ $data['date_modified'] }}</td>
+                                        <td>{{ $data['duration_minutes'] }}</td>
+                                        <td>{{ $data['file_size_bytes'] }}</td>
                                         <td>{{ $data['filename'] }}</td>
                                         <td>
-                                            <a href="{{ $data['url'] }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                                            <a href="{{ route('decryptUrl', ['encryptedUrl' => $data['url']]) }}" class="btn btn-primary btn-sm"
+                                                title="Download">
+                                                <i class="bi bi-download"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -90,34 +101,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-0">
+                                    <label for="input-start-date-time-in-download-playback" class="form-label text-dark">Start Date Time</label>
+                                    <input type="datetime-local" id="input-start-date-time-in-download-playback" class="form-control" placeholder="..." name="start_date_time">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-0">
                                     <label for="select2-form-downloadPlayback-tid" class="form-label text-dark">TID</label>
                                     <select id="select2-form-downloadPlayback-tid" class="form-control select2-form-downloadPlayback-tid" name="tid" style="width: 300px;">
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-0">
-                                    <label for="input-folder-date" class="form-label text-dark">Date</label>
-                                    <input type="date" id="input-folder-date" class="form-control" placeholder="YYYY-MM-DD" name="folder_date">
-                                </div>
-                            </div>
+
 
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-0">
-                                    <label for="input-starthour-date" class="form-label text-dark">Start Hour</label>
-                                    <input type="time" id="input-starthour-date" class="form-control" name="starthour_date" style="width: 372px;">
+                                    <label for="input-end-date-time-in-log-accepted" class="form-label text-dark">End Date Time</label>
+                                    <input type="datetime-local" id="input-end-date-time-in-download-playback" class="form-control" placeholder="..." name="end_date_time">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-0">
-                                    <label for="input-endhour" class="form-label text-dark">End Hour</label>
-                                    <input type="time" id="input-endhour" class="form-control" name="endhour" style="width: 372px;">
-                                </div>
-                            </div>
-
                         </div>
 
                 </div>
@@ -128,9 +133,8 @@
                                 <label for="" class="form-label text-dark">Last Filter</label>
                                 <br>
                                 <span class="badge bg-primary mb-2">TID: <span id="" class="badge bg-light text-black">{{ $tid ?? 'N/A' }}</span></span>
-                                <span class="badge bg-primary mb-2">Date: <span id="last_filter_no_card" class="badge bg-light text-black">{{ $folder_date ?? 'N/A' }}</span></span>
-                                <span class="badge bg-primary mb-2">Start Hour: <span id="last_filter_door_token" class="badge bg-light text-black">{{ $starthour_date ?? 'N/A' }}</span></span>
-                                <span class="badge bg-primary mb-2">End Hour: <span id="last_filter_location_access" class="badge bg-light text-black">{{ $endhour ?? 'N/A' }}</span></span>
+                                <span class="badge bg-primary mb-2">Start Date Time: <span id="last_filter_no_card" class="badge bg-light text-black">{{ $start_date_time ?? 'N/A' }}</span></span>
+                                <span class="badge bg-primary mb-2">End Date Time: <span id="last_filter_door_token" class="badge bg-light text-black">{{ $end_date_time ?? 'N/A' }}</span></span>
                             </div>
                         </div>
                     </div>
@@ -181,13 +185,12 @@
     //  btn reset request to null with id='btn-reset-filter-downloadPlayback' and reload page
     $('#btn-reset-filter-downloadPlayback').on('click', function () {
         $('#select2-form-downloadPlayback-tid').val(null).trigger('change');
-        $('#input-folder-date').val(null);
-        $('#input-starthour-date').val(null);
-        $('#input-endhour').val(null).trigger('change');
+        $('#input-start-date-time-in-download-playback').val(null);
+        $('#input-end-date-time-in-download-playback').val(null).trigger('change');
     });
 
     // changeToLoadingFormResetFilterHumanDetection
-    function changeToLoadingFormResetFilterHumanDetection() {
+    function changeToLoadingFormResetFilterDownloadPlayback() {
         var btn = document.getElementById('btn-reset-filter-downloadPlayback');
         btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
         btn.disabled = true;
@@ -199,7 +202,7 @@
             btn.innerHTML = 'Reset';
 
             // Submit the form
-            $('#form-filter-downladPlayback').submit();
+            $('#form-filter-downloadPlayback').submit();
         }, 250);
     }
 
