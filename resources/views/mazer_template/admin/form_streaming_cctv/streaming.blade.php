@@ -198,6 +198,11 @@
                         </div>
                     </div>
                 </div>
+                {{-- px pading kanan kiri, py pading atas bawah --}}
+                <div class="card-body">
+                </div>
+                <div class="card-body">
+                </div>
             </div>
         </div>
         {{-- live --}}
