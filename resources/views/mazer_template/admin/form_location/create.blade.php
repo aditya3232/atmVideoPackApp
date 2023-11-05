@@ -14,7 +14,8 @@
     <section id="multiple-column-form">
         <div class="row match-height">
             <div class="mb-4">
-                <a href="{{ route('admin.location.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left" style="font-size: 13px;"></i></a>
+                <a href="{{ route('admin.location.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left"
+                        style="font-size: 13px;"></i></a>
             </div>
             <form class="form" action="{{ route('admin.location.store') }}" id="form-create-location" method="POST">
                 @csrf
@@ -44,7 +45,7 @@
                                     </div>
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
-                                            <label for="kc_supervisi_id" style="font-weight: bold;">KC Supervisi <span class="text-danger">*</span></label>
+                                            <label for="kc_supervisi_id" style="font-weight: bold;">Branch <span class="text-danger">*</span></label>
                                             <select class="form-control select2-form-location-kc-supervisi" name="kc_supervisi_id">
                                                 @if(old('kc_supervisi_id')  != null)
                                                     <option value="{{ old('kc_supervisi_id') }}" selected="selected">
@@ -60,7 +61,7 @@
                                     </div>
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
-                                            <label for="branch_id" style="font-weight: bold;">Branch <span class="text-danger">*</span></label>
+                                            <label for="branch_id" style="font-weight: bold;">Lokasi <span class="text-danger">*</span></label>
                                             <select class="form-control select2-form-location-branch" name="branch_id">
                                                 @if(old('branch_id')  != null)
                                                     <option value="{{ old('branch_id') }}" selected="selected">
@@ -81,7 +82,7 @@
                                                 <textarea name="address" id="address" cols="24" class="form-control" placeholder="..."
                                                     rows="3">{{ old('address') ? old('address') : '' }}</textarea>
                                                 <div class="form-control-icon">
-                                                        @include('mazer_template.layouts.icons.alphabet')
+                                                    @include('mazer_template.layouts.icons.alphabet')
                                                 </div>
                                             </div>
                                             @if($errors->has('address'))
@@ -96,7 +97,7 @@
                                                 <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="postal_code" class="form-control" placeholder="..." name="postal_code"
                                                     value="{{ old('postal_code') ? old('postal_code') : '' }}">
                                                 <div class="form-control-icon">
-                                                            @include('mazer_template.layouts.icons.numeric')
+                                                    @include('mazer_template.layouts.icons.numeric')
                                                 </div>
                                             </div>
                                             @if($errors->has('postal_code'))

@@ -16,7 +16,9 @@
 
     {{-- custom css --}}
     <link rel="stylesheet" href="/css/custom.css">
-    
+
+    {{-- chart js --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
 
     {{-- new datatable --}}
     <link rel="stylesheet" href="/assets/css/bootstrap.min.csss">
