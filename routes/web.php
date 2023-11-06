@@ -71,7 +71,9 @@ Route::get('/decrypt/{encryptedUrl}', function ($encryptedUrl) {
 // admin // dashboard
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'roleHasPermission:sidebar parent dashboard']], function() {
     Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::post('/datatabletotalcardmcu', [AdminController::class, 'dataTableTotalCardMcu'])->name('datatabletotalcardmcu');
+    Route::get('/getdeviceupanddown', [AdminController::class, 'getDataDeviceUpAndDown'])->name('getdeviceupanddown');
+    Route::get('/getdatatabledevicedown', [AdminController::class, 'getDatatablesDeviceDown'])->name('getdatatabledevicedown');
+    Route::get('/getdatatabledeviceup', [AdminController::class, 'getDatatablesDeviceUp'])->name('getdatatabledeviceup');
 });
 
 // permissions

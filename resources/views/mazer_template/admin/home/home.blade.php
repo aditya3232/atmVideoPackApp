@@ -34,14 +34,14 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <div class="stats-icon" style="background-color: rgba(75, 192, 192, 0.6)">
-                                            <a href="" class="">
+                                            <a href="{{ route('admin.getdatatabledeviceup') }}" target="_blank" class="">
                                                 <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="col-md-10">
                                         <h6 class="text-muted font-semibold">Total Device Up</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $onlineCount }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -53,14 +53,14 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <div class="stats-icon" style="background-color: rgba(255, 99, 132, 0.6)">
-                                            <a href="" class="">
+                                            <a href="{{ route('admin.getdatatabledevicedown') }}" target="_blank" class="">
                                                 <img src="data:image/svg+xml;base64,{{ base64_encode(view('mazer_template.layouts.icons.device-white')->render()) }}" alt="" width="25">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="col-md-10">
                                         <h6 class="text-muted font-semibold">Total Device Down</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $offlineCount }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -96,24 +96,16 @@
 
 </div>
 
-{{-- doughnut chart  DeviceDown --}}
 <script>
-    var ctx = document.getElementById('deviceChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'doughnut', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+    const ctx = document.getElementById('deviceChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
         data: {
             labels: ['Device Up', 'Device Down'],
             datasets: [{
                 label: 'Total Device Up / Down',
-                data: [
-                    100,
-                    200
-                ],
-                //backgroundColor:'green',
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(255, 99, 132, 0.6)',
-                ],
+                data: [0, 0], // Initialize with default values
+                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
                 borderWidth: 1,
                 borderColor: '#777',
                 hoverBorderWidth: 3,
@@ -144,14 +136,28 @@
                 }
             },
             tooltips: {
-                enabled: true
+                enabled: true,
             }
         }
     });
 
+    // Fetch data from the server
+    fetch('/admin/getdeviceupanddown')
+        .then(response => response.json())
+        .then(data => {
+            const onlineCount = data.onlineCount;
+            const offlineCount = data.offlineCount;
+            const total = onlineCount + offlineCount;
+            const onlinePercentage = ((onlineCount / total) * 100).toFixed(2);
+            const offlinePercentage = ((offlineCount / total) * 100).toFixed(2);
+
+            // Update chart data and labels with the fetched data
+            myChart.data.datasets[0].data = [onlineCount, offlineCount];
+            myChart.data.labels = [`${onlinePercentage}% Device Up`, `${offlinePercentage}% Device Down`];
+            myChart.update();
+        })
+        .catch(error => console.error(error));
+
 </script>
-
-
-
 
 @endsection
