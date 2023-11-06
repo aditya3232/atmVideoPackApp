@@ -222,9 +222,7 @@
                                 <thead>
                                     <tr>
                                         <td style="width: 100%;">
-                                            @foreach($status_mc_detection as $data)
-                                                <iframe src="{{ env('STREAMING_CCTV_URL') . $data['tid_id'] }}" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
-                                            @endforeach
+                                            <iframe src="{{ $streaming_cctv_data }}" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
                                         </td>
                                     </tr>
                                 </thead>

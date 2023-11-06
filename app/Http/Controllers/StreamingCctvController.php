@@ -70,6 +70,23 @@ class StreamingCctvController extends Controller
 
                 $status_mc_detection[] = $combined_data;
             }
+
+            // streaming cctv with client guzzle from here  http://103.175.216.8:3636/api/atmvideopack/v1/stream/cctv/1
+            $url = env('STREAMING_CCTV_URL') . $id;
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                'x-api-key' => 'YAHYAAJA',
+                ],
+            ]);
+
+            $streaming_cctv_data = json_decode($response->getBody());
+
+            return view('mazer_template.admin.form_streaming_cctv.streaming', [
+                'status_mc_detection' => $status_mc_detection,
+                'streaming_cctv_data' => $streaming_cctv_data,
+            ]);
+            
+
         } catch (\Illuminate\Database\QueryException $e) {
             // Alert::error($e->getMessage());
             Alert::error('QueryException !');
@@ -94,14 +111,8 @@ class StreamingCctvController extends Controller
             // Alert::error($e->getMessage());
             Alert::error('Throwable !');
             return redirect()->route('admin.streamingcctv.index');
-            
         }
 
-        // return view('mazer_template.admin.form_streaming_cctv.streaming', compact('get_data_tb_mcu_id','get_status_mc'));
-
-        return view('mazer_template.admin.form_streaming_cctv.streaming', [
-            'status_mc_detection' => $status_mc_detection,
-        ]);
     }
 
 
