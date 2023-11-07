@@ -108,7 +108,7 @@ class LocationController extends Controller
         {
             foreach ($FormTbLocations as $FormTbLocation)
             {
-                $edit =  route('admin.branch.edit',$FormTbLocation->id);
+                $edit =  route('admin.location.edit',$FormTbLocation->id);
 
 
                 $TbLocationId = $FormTbLocation->id;
@@ -163,9 +163,9 @@ class LocationController extends Controller
         ],$messages);
 
         // if input no_card not null then must unique, but when null or string '' then not unique
-        if($request->input('branch_id') != null) {
+        if($request->input('address') != null) {
             $validator = Validator::make($request->all(),[
-                'branch_id' => 'required|unique:tb_location,branch_id',
+                'address' => 'required|unique:tb_location,address',
             ],$messages);
         }
 
@@ -291,6 +291,132 @@ class LocationController extends Controller
             }
 
         return response()->json($response);
+    }
+
+    public function edit($id) {
+        try {
+            $data = TbLocation::findOrFail($id);
+
+            $regionalOfficeName = TbLocation::join('tb_regional_office as regional_office', 'regional_office.id', '=', 'tb_location.regional_office_id')
+                            ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'tb_location.kc_supervisi_id')
+                            ->join('tb_branch as branch', 'branch.id', '=', 'tb_location.branch_id')
+                            ->select('regional_office.regional_office_name',
+                                                 'kc_supervisi.kc_supervisi_name',
+                                                 'branch.branch_name',
+                                                 'tb_location.address',
+                                                 'tb_location.postal_code',
+                                                 'tb_location.created_at',
+                                                 'tb_location.id')
+                            ->where('tb_location.id', $data->id)
+                            ->get();
+            
+            $regional_office_name = $regionalOfficeName[0]->regional_office_name;
+            $kc_supervisi_name = $regionalOfficeName[0]->kc_supervisi_name;
+            $branch_name = $regionalOfficeName[0]->branch_name;
+
+            return view('mazer_template.admin.form_location.edit', compact('data','regional_office_name','kc_supervisi_name','branch_name'));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $data = TbLocation::findOrFail($id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit location!');
+            return redirect()->route('admin.location.index');
+        }
+
+        $messages = [
+            'required' => ':attribute wajib diisi.',
+            'min' => ':attribute harus diisi minimal :min karakter.',
+            'max' => ':attribute harus diisi maksimal :max karakter.',
+            'size' => ':attribute harus diisi tepat :size karakter.',
+            'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'regional_office_id' => 'required',
+            'kc_supervisi_id' => 'required',
+            'branch_id' => 'required',
+            'address' => 'required',
+            'postal_code' => 'required',
+        ],$messages);
+
+        // check if the alamt values have changed
+        if ($request->input('address') !== $data->address) {
+            $validator->addRules(['address' => 'required|unique:tb_location,address']);
+        }
+
+        if($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+        TbLocation::where('id',$id)
+        ->update([
+            'regional_office_id' => $request->input('regional_office_id'),
+            'kc_supervisi_id' => $request->input('kc_supervisi_id'),
+            'branch_id' => $request->input('branch_id'),
+            'address' => $request->input('address'),
+            'postal_code' => $request->input('postal_code'),
+        ]);
+
+        DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.edit');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.edit');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.edit');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.edit');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.edit');
+        }
+
+        return response()->json(['message' => 'Lokasi berhasil diupdate']);
+
     }
 
     

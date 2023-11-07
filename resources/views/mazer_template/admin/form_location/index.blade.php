@@ -30,8 +30,8 @@
                             <tr>
                                 <th>No</th>
                                 <th>Regional Office</th>
+                                <th>KC Supervisi</th>
                                 <th>Branch</th>
-                                <th>Lokasi</th>
                                 <th>Alamat</th>
                                 <th>Kode Pos</th>
                                 <th>Created At</th>
