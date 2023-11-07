@@ -17,7 +17,7 @@
                 <a href="{{ route('admin.location.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left"
                         style="font-size: 13px;"></i></a>
             </div>
-            <form class="form" action="{{ route('admin.location.store') }}" id="form-create-location" method="POST">
+            <form class="form" action="{{ route('admin.location.store') }}" id="form-create-location" method="POST" onsubmit="return false;">
                 @csrf
                 <div class="col-12">
                     <div class="card">
@@ -118,6 +118,9 @@
     </section>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     function changeToLoadingFormCreateLocation() {
         var btn = document.getElementById('submit-create-location');
@@ -139,9 +142,69 @@
         // Get the form element
         var form = document.getElementById('form-create-location');
 
-        // Submit the form
-        form.submit();
+        // Create a new FormData object
+        var formData = new FormData(form);
+
+        // Send the form data using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.errors) {
+                    // Handle validation errors
+                    var errorMessages = Object.values(response.errors).join('<br>');
+                    Swal.fire({
+                        title: 'Validation Error',
+                        html: errorMessages, // Gunakan html untuk mengaktifkan baris baru (\n)
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                } else {
+                    // Handle a successful response
+                    console.log(response.message);
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('admin.location.index') }}";
+                        }
+                    });
+                }
+            } else {
+                // Handle errors
+                console.error(xhr.statusText);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Location failed to update.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        };
+        xhr.onerror = function () {
+            console.error(xhr.statusText);
+        };
+        xhr.send(formData);
     }
+
+</script>
+
+{{-- mencegah enter form --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("form-create-location");
+
+        form.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                // Mencegah pengguna menekan Enter tanpa klik tombol submit
+            }
+        });
+    });
 
 </script>
 

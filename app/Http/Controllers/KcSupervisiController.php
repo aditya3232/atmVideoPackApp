@@ -120,9 +120,13 @@ class KcSupervisiController extends Controller
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.kcsupervisi.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.kcsupervisi.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -161,8 +165,10 @@ class KcSupervisiController extends Controller
         
     }
 
-        Alert::success('Sukses', 'KC Supervisi berhasil ditambahkan.');
-        return redirect()->route('admin.kcsupervisi.index');
+        // Alert::success('Sukses', 'KC Supervisi berhasil ditambahkan.');
+        // return redirect()->route('admin.kcsupervisi.index');
+
+        return response()->json(['message' => 'KC Supervisi berhasil ditambahkan']);
     }
 
     public function edit($id) {

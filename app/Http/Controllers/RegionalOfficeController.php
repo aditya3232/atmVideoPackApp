@@ -119,9 +119,13 @@ class RegionalOfficeController extends Controller
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.regionaloffice.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.regionaloffice.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -160,8 +164,10 @@ class RegionalOfficeController extends Controller
         
     }
 
-        Alert::success('Sukses', 'Regional office berhasil ditambahkan.');
-        return redirect()->route('admin.regionaloffice.index');
+        // Alert::success('Sukses', 'Regional office berhasil ditambahkan.');
+        // return redirect()->route('admin.regionaloffice.index');
+
+        return response()->json(['message' => 'Regional office berhasil ditambahkan']);
     }
 
     public function edit($id) {

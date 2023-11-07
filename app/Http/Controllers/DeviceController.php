@@ -184,9 +184,13 @@ class DeviceController extends Controller
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.device.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.device.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -228,8 +232,10 @@ class DeviceController extends Controller
         
     }
 
-        Alert::success('Sukses', 'Device berhasil ditambahkan.');
-        return redirect()->route('admin.device.index');
+        // Alert::success('Sukses', 'Device berhasil ditambahkan.');
+        // return redirect()->route('admin.device.index');
+
+        return response()->json(['message' => 'Device berhasil ditambahkan']);
     }
 
     public function select2Location(Request $request) {

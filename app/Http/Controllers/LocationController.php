@@ -169,9 +169,13 @@ class LocationController extends Controller
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.location.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.location.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -214,8 +218,10 @@ class LocationController extends Controller
         
     }
 
-        Alert::success('Sukses', 'Location berhasil ditambahkan.');
-        return redirect()->route('admin.location.index');
+        // Alert::success('Sukses', 'Location berhasil ditambahkan.');
+        // return redirect()->route('admin.location.index');
+
+        return response()->json(['message' => 'Location berhasil ditambahkan']);
     }
 
     public function select2RegionalOffice(Request $request) {

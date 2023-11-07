@@ -130,9 +130,13 @@ class BranchController extends Controller
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.branch.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.branch.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -172,9 +176,12 @@ class BranchController extends Controller
         
     }
 
-        Alert::success('Sukses', 'Branch berhasil ditambahkan.');
-        return redirect()->route('admin.branch.index');
+        // Alert::success('Sukses', 'Branch berhasil ditambahkan.');
+        // return redirect()->route('admin.branch.index');
+        
+        return response()->json(['message' => 'Branch berhasil ditambahkan']);
     }
+
 
     public function edit($id) {
         try {
