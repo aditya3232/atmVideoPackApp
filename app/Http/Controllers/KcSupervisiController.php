@@ -67,7 +67,7 @@ class KcSupervisiController extends Controller
         {
             foreach ($FormTbKcSupervisis as $FormTbKcSupervisi)
             {
-                $edit =  route('admin.branch.edit',$FormTbKcSupervisi->id);
+                $edit =  route('admin.kcsupervisi.edit',$FormTbKcSupervisi->id);
 
 
                 $TbKcSupervisiId = $FormTbKcSupervisi->id;
@@ -164,4 +164,107 @@ class KcSupervisiController extends Controller
         Alert::success('Sukses', 'KC Supervisi berhasil ditambahkan.');
         return redirect()->route('admin.kcsupervisi.index');
     }
+
+    public function edit($id) {
+        try {
+            $data = TbKcSupervisi::findOrFail($id);
+
+            return view('mazer_template.admin.form_kc_supervisi.edit', compact('data'));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $data = TbKcSupervisi::findOrFail($id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit kc supervisi!');
+            return redirect()->route('admin.kcsupervisi.index');
+        }
+
+        $messages = [
+            'required' => ':attribute wajib diisi.',
+            'min' => ':attribute harus diisi minimal :min karakter.',
+            'max' => ':attribute harus diisi maksimal :max karakter.',
+            'size' => ':attribute harus diisi tepat :size karakter.',
+            'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'kc_supervisi_name' => 'required',
+        ],$messages);
+
+        // check if the kc_supervisi_name values have changed
+        if ($request->input('kc_supervisi_name') !== $data->kc_supervisi_name) {
+            $validator->addRules(['kc_supervisi_name' => 'required|unique:tb_kc_supervisi,kc_supervisi_name']);
+        }
+
+        if($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+        TbKcSupervisi::where('id',$id)
+        ->update([
+            'kc_supervisi_name' => $request->input('kc_supervisi_name'),
+        ]);
+
+        DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.edit');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.edit');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.edit');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.edit');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.edit');
+        }
+
+        return response()->json(['message' => 'KC Supervisi berhasil diupdate']);
+
+    }
+
+
 }
