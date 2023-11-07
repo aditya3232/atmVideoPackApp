@@ -81,7 +81,7 @@ class BranchController extends Controller
                 $nestedData['created_at'] = $FormTbBranch->created_at;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='Edit' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-entry-id='$tbBranchId' data-branch-name='$branchName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteBranch' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-branch' style='border-radius:12px; background-color:#FF0000; color:white;' data-branch-name='{$branchName}' data-tb-branch-id='{$tbBranchId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -287,6 +287,41 @@ class BranchController extends Controller
         }
 
         return response()->json(['message' => 'Branch berhasil diupdate']);
+
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+
+            $tb_branch = TbBranch::findOrFail($id);
+            $tb_branch->delete();
+
+            DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.index');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.index');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.index');
+        }
+
+        return response()->json(['message' => 'Branch berhasil dihapus']);
 
     }
 
