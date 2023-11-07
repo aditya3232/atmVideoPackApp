@@ -77,7 +77,7 @@ class RegionalOfficeController extends Controller
                 $nestedData['created_at'] = $FormTbRegionalOffice->created_at;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='Edit' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-entry-id='$TbRegionalOfficeId' data-branch-name='$regionalOfficeName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteRegionalOffice' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-regional-office' style='border-radius:12px; background-color:#FF0000; color:white;' data-regional-office-name='{$regionalOfficeName}' data-tb-regional-office-id='{$TbRegionalOfficeId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -268,6 +268,41 @@ class RegionalOfficeController extends Controller
         }
 
         return response()->json(['message' => 'Regional office berhasil diupdate']);
+
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+
+            $tb_regional_office = TbRegionalOffice::findOrFail($id);
+            $tb_regional_office->delete();
+
+            DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        }
+
+        return response()->json(['message' => 'Regional office berhasil dihapus']);
 
     }
 
