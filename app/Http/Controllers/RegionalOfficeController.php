@@ -66,7 +66,7 @@ class RegionalOfficeController extends Controller
         {
             foreach ($FormTbRegionalOffices as $FormTbRegionalOffice)
             {
-                $edit =  route('admin.branch.edit',$FormTbRegionalOffice->id);
+                $edit =  route('admin.regionaloffice.edit',$FormTbRegionalOffice->id);
 
 
                 $TbRegionalOfficeId = $FormTbRegionalOffice->id;
@@ -163,4 +163,108 @@ class RegionalOfficeController extends Controller
         Alert::success('Sukses', 'Regional office berhasil ditambahkan.');
         return redirect()->route('admin.regionaloffice.index');
     }
+
+    public function edit($id) {
+        try {
+            $data = TbRegionalOffice::findOrFail($id);
+
+            return view('mazer_template.admin.form_regional_office.edit', compact('data'));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $data = TbRegionalOffice::findOrFail($id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit regional office!');
+            return redirect()->route('admin.regionaloffice.index');
+        }
+
+        $messages = [
+            'required' => ':attribute wajib diisi.',
+            'min' => ':attribute harus diisi minimal :min karakter.',
+            'max' => ':attribute harus diisi maksimal :max karakter.',
+            'size' => ':attribute harus diisi tepat :size karakter.',
+            'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'regional_office_name' => 'required',
+        ],$messages);
+
+        // check if the regional_office_name values have changed
+        if ($request->input('regional_office_name') !== $data->regional_office_name) {
+            $validator->addRules(['regional_office_name' => 'required|unique:tb_regional_office,regional_office_name']);
+        }
+
+        if($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+        TbRegionalOffice::where('id',$id)
+        ->update([
+            'regional_office_name' => $request->input('regional_office_name'),
+        ]);
+
+        DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.regionaloffice.edit');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.regionaloffice.edit');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.regionaloffice.edit');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.regionaloffice.edit');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.regionaloffice.edit');
+        }
+
+        return response()->json(['message' => 'Regional office berhasil diupdate']);
+
+    }
+
+
+
 }
