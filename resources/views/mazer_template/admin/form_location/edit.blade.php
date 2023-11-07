@@ -17,7 +17,7 @@
                 <a href="{{ route('admin.location.index') }}" type="button" class="btn" style='border-radius:12px; background-color:#FFA500; color:white;'><i class="bi bi-arrow-return-left"
                         style="font-size: 13px;"></i></a>
             </div>
-            <form class="form" action="{{ url('admin/location/update/'.$data->id) }}" id="form-update-location" method="POST">
+            <form class="form" action="{{ url('admin/location/update/'.$data->id) }}" id="form-update-location" method="POST" onsubmit="return false;">
                 @csrf
                 <div class="col-12">
                     <div class="card">
@@ -188,6 +188,21 @@
         };
         xhr.send(formData);
     }
+
+</script>
+
+{{-- mencegah enter form --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("form-update-location");
+
+        form.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                // Mencegah pengguna menekan Enter tanpa klik tombol submit
+            }
+        });
+    });
 
 </script>
 

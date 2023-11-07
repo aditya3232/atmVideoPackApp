@@ -175,4 +175,113 @@ class BranchController extends Controller
         Alert::success('Sukses', 'Branch berhasil ditambahkan.');
         return redirect()->route('admin.branch.index');
     }
+
+    public function edit($id) {
+        try {
+            $data = TbBranch::findOrFail($id);
+
+            return view('mazer_template.admin.form_branch.edit', compact('data'));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $data = TbBranch::findOrFail($id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit branch!');
+            return redirect()->route('admin.branch.index');
+        }
+
+        $messages = [
+            'required' => ':attribute wajib diisi.',
+            'min' => ':attribute harus diisi minimal :min karakter.',
+            'max' => ':attribute harus diisi maksimal :max karakter.',
+            'size' => ':attribute harus diisi tepat :size karakter.',
+            'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'branch_name' => 'required',
+            'branch_code' => 'required',
+        ],$messages);
+
+        // check if the branch_name values have changed
+        if ($request->input('branch_name') !== $data->branch_name) {
+            $validator->addRules(['branch_name' => 'required|unique:tb_branch,branch_name']);
+        }
+
+        if ($request->input('branch_code') !== $data->branch_code) {
+            $validator->addRules(['branch_code' => 'required|unique:tb_branch,branch_code']);
+        }
+
+        if($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+        TbBranch::where('id',$id)
+        ->update([
+            'branch_name' => $request->input('branch_name'),
+            'branch_code' => $request->input('branch_code'),
+        ]);
+
+        DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.edit');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.edit');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.edit');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.edit');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.branch.edit');
+        }
+
+        return response()->json(['message' => 'Branch berhasil diupdate']);
+
+    }
+
+
 }
