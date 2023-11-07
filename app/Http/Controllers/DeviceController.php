@@ -165,7 +165,7 @@ class DeviceController extends Controller
             'location_id' => 'required',
         ],$messages);
 
-        // if input no_card not null then must unique, but when null or string '' then not unique
+        // if input tid not null then must unique, but when null or string '' then not unique
         if($request->input('tid') != null) {
             $validator = Validator::make($request->all(),[
                 'tid' => 'required|unique:tb_tid,tid',
@@ -277,6 +277,138 @@ class DeviceController extends Controller
             }
 
         return response()->json($response);
+    }
+
+    public function edit($id) {
+        try {
+            $data = TbTid::findOrFail($id);
+
+            $locations = TbLocation::join('tb_regional_office as regional_office', 'regional_office.id', '=', 'tb_location.regional_office_id')
+                            ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'tb_location.kc_supervisi_id')
+                            ->join('tb_branch as branch', 'branch.id', '=', 'tb_location.branch_id')
+                            ->select('regional_office.regional_office_name',
+                                                 'kc_supervisi.kc_supervisi_name',
+                                                 'branch.branch_name',
+                                                 'tb_location.address',
+                                                 'tb_location.postal_code',
+                                                 'tb_location.created_at',
+                                                 'tb_location.id')
+                            ->where('tb_location.id', $data->location_id)
+                            ->get();
+            
+            foreach($locations as $location){
+                $location_name = $location->regional_office_name . ' - ' . $location->kc_supervisi_name . ' - ' . $location->branch_name . ' - ' . $location->address . ' - ' . $location->postal_code;
+            }
+
+            return view('mazer_template.admin.form_device.edit', compact('data','location_name'));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $data = TbTid::findOrFail($id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (ModelNotFoundException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (\Exception $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (PDOException $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        } catch (Throwable $e) {
+            Alert::error('Gagal masuk form edit device!');
+            return redirect()->route('admin.device.index');
+        }
+
+        $messages = [
+            'required' => ':attribute wajib diisi.',
+            'min' => ':attribute harus diisi minimal :min karakter.',
+            'max' => ':attribute harus diisi maksimal :max karakter.',
+            'size' => ':attribute harus diisi tepat :size karakter.',
+            'unique' => ':attribute sudah terpakai.',
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'tid' => 'required',
+            'ip_address' => 'required',
+            'sn_mini_pc' => 'required',
+            'location_id' => 'required',
+        ],$messages);
+
+        // check if the tid values have changed
+        if ($request->input('tid') !== $data->tid) {
+            $validator->addRules(['tid' => 'required|unique:tb_tid,tid']);
+        }
+
+        if ($request->input('ip_address') !== $data->ip_address) {
+            $validator->addRules(['ip_address' => 'required|unique:tb_tid,ip_address']);
+        }
+
+        if ($request->input('sn_mini_pc') !== $data->sn_mini_pc) {
+            $validator->addRules(['sn_mini_pc' => 'required|unique:tb_tid,sn_mini_pc']);
+        }
+
+        if($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+        TbTid::where('id',$id)
+        ->update([
+            'tid' => $request->input('tid'),
+            'ip_address' => $request->input('ip_address'),
+            'sn_mini_pc' => $request->input('sn_mini_pc'),
+            'location_id' => $request->input('location_id'),
+        ]);
+
+        DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.edit');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.edit');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.edit');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.edit');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.edit');
+        }
+
+        return response()->json(['message' => 'Device berhasil diupdate']);
+
     }
 
 }

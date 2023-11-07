@@ -29,11 +29,9 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group has-icon-left">
                                             <label for="tid" style="font-weight: bold">TID</label>
-                                            
-                                                
                                             <div class="position-relative">
                                                 <input oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="number" id="tid" class="form-control" placeholder="..." name="tid"
-                                                value="{{ old('tid') ? old('tid') : '' }}">
+                                                    value="{{ old('tid') ? old('tid') : '' }}">
                                                 <div class="form-control-icon">
                                                     @include('mazer_template.layouts.icons.numeric')
                                                 </div>

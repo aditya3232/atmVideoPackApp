@@ -179,6 +179,7 @@ Route::group(['prefix' => 'admin/device', 'as' => 'admin.device.', 'middleware' 
     Route::post('/update/{id}', [DeviceController::class, 'update'])->name('update');
     Route::delete('/destroy/{id}', [DeviceController::class, 'destroy'])->name('destroy');
     Route::post('/select2location', [DeviceController::class, 'select2Location'])->name('select2location');
+    Route::post('/getlocationnamebylocationid', [DeviceController::class, 'getLocationNameByLocationId'])->name('getlocationnamebylocationid');
 });
 
 // Location
