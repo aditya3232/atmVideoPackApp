@@ -127,7 +127,9 @@ class DeviceController extends Controller
                 $nestedData['created_at'] = $FormTbTid->created_at;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='Edit' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-tid-id='$TbTidId' data-tid='$Tid' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteKcSupervisi' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-device' style='border-radius:12px; background-color:#FF0000; color:white;' data-tid='{$Tid}' data-tb-tid-id='{$TbTidId}'><i class='bi bi-trash'></i></button>
+
+                
                 ";
                 $data[] = $nestedData;
 
@@ -414,6 +416,41 @@ class DeviceController extends Controller
         }
 
         return response()->json(['message' => 'Device berhasil diupdate']);
+
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+
+            $tb_tid = TbTid::findOrFail($id);
+            $tb_tid->delete();
+
+            DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.index');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.index');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.device.index');
+        }
+
+        return response()->json(['message' => 'Device berhasil dihapus']);
 
     }
 
