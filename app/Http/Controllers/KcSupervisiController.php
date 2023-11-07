@@ -78,7 +78,7 @@ class KcSupervisiController extends Controller
                 $nestedData['created_at'] = $FormTbKcSupervisi->created_at;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='Edit' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-entry-id='$TbKcSupervisiId' data-branch-name='$kcSupervisiName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteKcSupervisi' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-kc-supervisi' style='border-radius:12px; background-color:#FF0000; color:white;' data-kc-supervisi-name='{$kcSupervisiName}' data-tb-kc-supervisi-id='{$TbKcSupervisiId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -269,6 +269,41 @@ class KcSupervisiController extends Controller
         }
 
         return response()->json(['message' => 'KC Supervisi berhasil diupdate']);
+
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+
+            $tb_kc_supervisi = TbKcSupervisi::findOrFail($id);
+            $tb_kc_supervisi->delete();
+
+            DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.kcsupervisi.index');
+        }
+
+        return response()->json(['message' => 'KC Supervisi berhasil dihapus']);
 
     }
 
