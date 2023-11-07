@@ -82,7 +82,8 @@
                                 confirmButtonColor: '#56B000',
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    // Ganti location.reload() dengan window.location.href
+                                    window.location.href = "{{ route('admin.device.index') }}";
                                 }
                             });
                         } else {

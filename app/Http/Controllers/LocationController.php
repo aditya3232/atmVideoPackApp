@@ -112,7 +112,7 @@ class LocationController extends Controller
 
 
                 $TbLocationId = $FormTbLocation->id;
-                $BranchName = $FormTbLocation->branch_name;
+                $Location = $FormTbLocation->regional_office_name . ' - ' . $FormTbLocation->kc_supervisi_name . ' - '  . $FormTbLocation->branch_name;
 
                 $nestedData['id'] = $FormTbLocation->id;
                 $nestedData['regional_office_name'] = $FormTbLocation->regional_office_name;
@@ -123,7 +123,7 @@ class LocationController extends Controller
                 $nestedData['created_at'] = $FormTbLocation->created_at;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='Edit' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-entry-id='$TbLocationId' data-branch-name='$BranchName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteKcSupervisi' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-location' style='border-radius:12px; background-color:#FF0000; color:white;' data-location='{$Location}' data-tb-location-id='{$TbLocationId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -422,6 +422,41 @@ class LocationController extends Controller
         }
 
         return response()->json(['message' => 'Lokasi berhasil diupdate']);
+
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+
+            $tb_location = TbLocation::findOrFail($id);
+            $tb_location->delete();
+
+            DB::commit();
+        
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (PDOException $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Alert::error($e->getMessage());
+            return redirect()->route('admin.location.index');
+        }
+
+        return response()->json(['message' => 'Location berhasil dihapus']);
 
     }
 
