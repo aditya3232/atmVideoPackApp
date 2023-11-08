@@ -131,8 +131,8 @@
                                                 @endif
 
                                                 <div class="d-grid gap-2 mt-4">
-                                                    {{-- <button class="btn btn-primary" type="submit">Submit</button> --}}
-                                                    <button class="align-items-center col-12 btn btn-lg" type="submit" style='border-radius:12px; background-color:#56B000; color:white;'>Update</button>
+                                                    <button class="align-items-center col-12 btn btn-lg" type="submit" id="submit-update-permission-role" onClick="changeToLoadingFormUpdatePermissionsRole()"
+                                                        style='border-radius:12px; background-color:#56B000; color:white;'>Update</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -255,6 +255,27 @@
             });
         });
 
+    });
+
+
+    // fungsi post with loading
+    function changeToLoadingFormUpdatePermissionsRole() {
+        var btn = document.getElementById('submit-update-permission-role');
+        btn.innerHTML = '<span class="spinner-border" role="status" aria-hidden="true"></span> Loading...';
+        btn.disabled = true;
+
+        // Simulating a delay of 2 seconds for demonstration purposes
+        setTimeout(function () {
+            // Enable the button and change the text back to "Login" after the delay
+            btn.disabled = false;
+            btn.innerHTML = 'Submit';
+
+            // Submit the form
+            submitFormUpdatePermissionsRole();
+        }, 2000);
+    }
+
+    function submitFormUpdatePermissionsRole() {
         // after post id = post-add-permission-to-role show sukses with swal
         $('#post-add-permission-to-role').on('submit', function (event) {
             event.preventDefault();
@@ -296,8 +317,7 @@
                 }
             });
         });
-
-    });
+    }
 
 </script>
 

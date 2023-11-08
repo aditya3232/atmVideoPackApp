@@ -103,7 +103,7 @@ class RoleController extends Controller
                 $nestedData['name'] = $Role->name;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='ADD PERMISSIONS' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-role-id='$rolesId' data-role-name='$roleName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteRole' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-role' style='border-radius:12px; background-color:#FF0000; color:white;' data-rolename='{$roleName}' data-tb-role-id='{$rolesId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -139,17 +139,23 @@ class RoleController extends Controller
             'name' => 'required|unique:roles,name',
         ],$messages);
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.roles.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.roles.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         Role::insert([
             'name' => $request->input('name'),
         ]);
 
-        Alert::success('Sukses', 'Tambah role berhasil');
-        return redirect()->route('admin.roles.index');
+        // Alert::success('Sukses', 'Tambah role berhasil');
+        // return redirect()->route('admin.roles.index');
+
+        return response()->json(['message' => 'Role berhasil ditambahkan']);
     }
 
     public function select2Permissions(Request $request, $id) {
