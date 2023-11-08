@@ -111,7 +111,7 @@ class UserController extends Controller
                 $nestedData['authId'] = Auth::user()->id; 
                 $nestedData['options'] = "
                 <a href='{$edit}' title='EDIT' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-tb-user-id='$tbUserId' data-user-name='$userName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeleteUser' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-user' style='border-radius:12px; background-color:#FF0000; color:white;' data-username='{$userName}' data-tb-user-id='{$tbUserId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -348,8 +348,10 @@ class UserController extends Controller
             return redirect()->route('admin.users.index');
         }
 
-        Alert::success('Sukses', 'User berhasil dihapus');
-        return redirect()->route('admin.users.index');
+        // Alert::success('Sukses', 'User berhasil dihapus');
+        // return redirect()->route('admin.users.index');
+
+        return response()->json(['message' => 'User berhasil dihapus']);
     }
 
 }

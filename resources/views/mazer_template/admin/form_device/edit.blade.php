@@ -29,72 +29,72 @@
                                     <i class="bi bi-clock"></i><span class="ms-2">Updated At : {{ $data->updated_at }}</span>
                                 </div>
                             </div>
-                            <div class="card-content">
-                                <div class="card-body">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
 
-                                    <div class="row">
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group has-icon-left">
-                                                <label for="tid" style="font-weight: bold">Tid <span class="text-danger">*</span></label>
+                                <div class="row">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group has-icon-left">
+                                            <label for="tid" style="font-weight: bold">Tid <span class="text-danger">*</span></label>
+                                            <div class="position-relative">
                                                 <div class="position-relative">
-                                                    <div class="position-relative">
-                                                        <input type="text" id="tid" class="form-control" placeholder="..." name="tid" value="{{ old('tid') ? old('tid') : $data->tid }}">
-                                                        <div class="form-control-icon">
-                                                            @include('mazer_template.layouts.icons.numeric')
-                                                        </div>
+                                                    <input type="text" id="tid" class="form-control" placeholder="..." name="tid" value="{{ old('tid') ? old('tid') : $data->tid }}">
+                                                    <div class="form-control-icon">
+                                                        @include('mazer_template.layouts.icons.numeric')
                                                     </div>
-                                                    @if($errors->has('tid'))
-                                                        <span class="text-danger">{{ $errors->first('tid') }}</span>
-                                                    @endif
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group has-icon-left">
-                                                <label for="ip_address" style="font-weight: bold">IP Address <span class="text-danger">*</span></label>
-                                                <div class="position-relative">
-                                                    <div class="position-relative">
-                                                        <input type="text" id="ip_address" class="form-control" placeholder="..." name="ip_address"
-                                                            value="{{ old('ip_address') ? old('ip_address') : $data->ip_address }}">
-                                                        <div class="form-control-icon">
-                                                            @include('mazer_template.layouts.icons.alphabet')
-                                                        </div>
-                                                    </div>
-                                                    @if($errors->has('ip_address'))
-                                                        <span class="text-danger">{{ $errors->first('ip_address') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group has-icon-left">
-                                                <label for="sn_mini_pc" style="font-weight: bold">SN Mini PC <span class="text-danger">*</span></label>
-                                                <div class="position-relative">
-                                                    <div class="position-relative">
-                                                        <input type="text" id="sn_mini_pc" class="form-control" placeholder="..." name="sn_mini_pc"
-                                                            value="{{ old('sn_mini_pc') ? old('sn_mini_pc') : $data->sn_mini_pc }}">
-                                                        <div class="form-control-icon">
-                                                            @include('mazer_template.layouts.icons.alphabet')
-                                                        </div>
-                                                    </div>
-                                                    @if($errors->has('sn_mini_pc'))
-                                                        <span class="text-danger">{{ $errors->first('sn_mini_pc') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-12">
-                                            <div class="form-group">
-                                                <label for="location_id" style="font-weight: bold;">Lokasi <span class="text-danger">*</span></label>
-                                                <select class="form-control select2-form-device-location" id="select2-form-device-location" name="location_id">
-                                                    <option value="{{ old('location_id') ? old('location_id') : $data->location_id }}" selected="selected">
-                                                        {{ $location_name }}
-                                                    </option>
-                                                </select>
-                                                @if($errors->has('location_id'))
-                                                    <span class="text-danger">{{ $errors->first('location_id') }}</span>
+                                                @if($errors->has('tid'))
+                                                    <span class="text-danger">{{ $errors->first('tid') }}</span>
                                                 @endif
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group has-icon-left">
+                                            <label for="ip_address" style="font-weight: bold">IP Address <span class="text-danger">*</span></label>
+                                            <div class="position-relative">
+                                                <div class="position-relative">
+                                                    <input type="text" id="ip_address" class="form-control" placeholder="..." name="ip_address"
+                                                        value="{{ old('ip_address') ? old('ip_address') : $data->ip_address }}">
+                                                    <div class="form-control-icon">
+                                                        @include('mazer_template.layouts.icons.alphabet')
+                                                    </div>
+                                                </div>
+                                                @if($errors->has('ip_address'))
+                                                    <span class="text-danger">{{ $errors->first('ip_address') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group has-icon-left">
+                                            <label for="sn_mini_pc" style="font-weight: bold">SN Mini PC <span class="text-danger">*</span></label>
+                                            <div class="position-relative">
+                                                <div class="position-relative">
+                                                    <input type="text" id="sn_mini_pc" class="form-control" placeholder="..." name="sn_mini_pc"
+                                                        value="{{ old('sn_mini_pc') ? old('sn_mini_pc') : $data->sn_mini_pc }}">
+                                                    <div class="form-control-icon">
+                                                        @include('mazer_template.layouts.icons.alphabet')
+                                                    </div>
+                                                </div>
+                                                @if($errors->has('sn_mini_pc'))
+                                                    <span class="text-danger">{{ $errors->first('sn_mini_pc') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="location_id" style="font-weight: bold;">Lokasi <span class="text-danger">*</span></label>
+                                            <select class="form-control select2-form-device-location" id="select2-form-device-location" name="location_id">
+                                                <option value="{{ old('location_id') ? old('location_id') : $data->location_id }}" selected="selected">
+                                                    {{ $location_name }}
+                                                </option>
+                                            </select>
+                                            @if($errors->has('location_id'))
+                                                <span class="text-danger">{{ $errors->first('location_id') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -102,12 +102,13 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <div class="d-grid gap-2 mt-4">
-                <button class="align-items-center col-12 btn btn-lg" type="submit" style='border-radius:12px; background-color:#56B000; color:white;' id="submit-update-device" onClick="changeToLoadingFormUpdateDevice()">Update</button>
-            </div>
         </div>
-    </section>
+        </form>
+        <div class="d-grid gap-2 mt-4">
+            <button class="align-items-center col-12 btn btn-lg" type="submit" style='border-radius:12px; background-color:#56B000; color:white;' id="submit-update-device" onClick="changeToLoadingFormUpdateDevice()">Update</button>
+        </div>
+</div>
+</section>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

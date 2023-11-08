@@ -22,7 +22,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <div class="float-start">
 
+                            </div>
+                            <div class="float-end">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-clock"></i><span class="ms-2">Updated At : {{ $data->updated_at }}</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
