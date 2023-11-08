@@ -254,9 +254,11 @@ class RoleController extends Controller
             
             Alert::success('Sukses', 'Permission telah ditambahkan');
             return back();
+            // return response()->json(['message' => 'Permission berhasil ditambahkan']);
         } else {
             Alert::error('Gagal', 'Tidak ada permissions yang ditambahkan');
             return back();
+            // return response()->json(['message' => 'Tidak ada permissions yang ditambahkan']);
         }
     }
 
@@ -265,8 +267,10 @@ class RoleController extends Controller
                   ->where('permission_id', $permission_id)
                   ->delete();
 
-        Alert::success('Sukses', 'Permission telah dihapus');
-        return back();
+        // Alert::success('Sukses', 'Permission telah dihapus');
+        // return back();
+
+        return response()->json(['message' => 'Permission berhasil dihapus']);
     }
 
     public function update(Request $request, $id) {

@@ -100,7 +100,7 @@
                                                 @if($role->permissions->count() > 0)
                                                     @foreach($role->permissions as $item)
                                                         <a data-role-id="{{ $role->id }}" data-permission-id="{{ $item->id }}" data-permission-name="{{ $item->name }}" title="Delete Permission" class="btn btn-sm mt-2 delete-access"
-                                                            data-bs-toggle="modal" data-bs-target="#modalDeletePermissionFromRole">
+                                                            id="delete-permission-role">
                                                             {{ $item->name }} | <i class='bi bi-trash'></i>
                                                         </a>
                                                     @endforeach
@@ -147,36 +147,6 @@
         </div>
 </div>
 </section>
-{{-- modal hapusnya --}}
-<div class="modal fade" id="modalDeletePermissionFromRole" tabindex="-1" aria-labelledby="modalDeletePermissionFromRoleLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-body text-center no-copy">
-                <div>
-                    <i class="bi bi-exclamation-circle" style="font-size: 100px; color:rgba(255, 165, 0, 0.4);"></i>
-                </div>
-
-                <div class="mb-4 mt-2">
-                    <h2 class="text-primary">Delete Permissions!</h2>
-                    <span class='badge bg-primary mb-2' style='border-radius: 12px;'>
-                        <text id="data_permission" style="font-size: 16px">
-                    </span>
-                </div>
-
-                <div>
-                    <p>Apakah anda yakin ingin delete permission?</p>
-                </div>
-
-                <div>
-                    <button class="btn" id="btn-delete-permission-from-role" style="border-radius:12px; background-color:#FF0000; color:white;"> Yes, delete it!</button>
-                    <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal" style="border-radius:12px;"><i class="bi bi-x-circle"></i> Cancel</button>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
 
 </div>
 
@@ -184,80 +154,79 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).on('click', '#delete-permission-role', function (e) {
+        e.preventDefault();
 
-        $('#modalDeletePermissionFromRole').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var roleId = button.data('role-id');
-            var permissionId = button.data('permission-id');
-            var permissionName = button.data('permission-name');
+        var roleId = $(this).data('role-id');
+        var permissionId = $(this).data('permission-id');
+        var permissionName = $(this).data('permission-name');
 
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Apakah anda yakin akan menghapus permission: ' + permissionName + ' ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#56B000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ url('admin/roles/deletepermissions/', ['', '']) }}" + '/' + roleId + '/' + permissionId, true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', $("input[name=_token]").val());
+                xhr.setRequestHeader('X-HTTP-Method-Override', 'DELETE'); // Menggunakan spoofing DELETE
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            // Handle a successful response
+                            console.log(response.message);
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload(); // Reload the page after successful deletion
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Permission failed to delete.',
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
+                    } else {
+                        console.error(xhr.statusText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Permission failed to delete.',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
 
-            // Attach the roleId & permissionId value to the delete button 
-            $('#btn-delete-permission-from-role').data('role-id', roleId);
-            $('#btn-delete-permission-from-role').data('permission-id', permissionId);
-
-            $('#data_permission').text(permissionName);
-        });
-
-
-        $('#btn-delete-permission-from-role').on('click', function (event) {
-
-            var roleId = $(this).data('role-id');
-            var permissionId = $(this).data('permission-id');
-
-            // console.log(roleId);
-            // console.log(permissionId);
-
-            var action = "{{ url('admin/roles/deletepermissions/', ['', '']) }}" + '/' + roleId + '/' + permissionId;
-            // console.log(action);
-            let token = $("meta[name='csrf-token']").attr("content");
-
-            $.ajax({
-                type: 'POST',
-                url: action,
-                data: {
-                    "_token": token,
-                    "_method": "DELETE" // Use method spoofing for DELETE
-                },
-                success: function (response) {
-                    console.log('Permission berhasil dihapus!', response);
-
+                };
+                xhr.onerror = function () {
+                    console.error(xhr.statusText);
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Permission berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeletePermissionFromRole').modal('hide');
-                },
-                error: function (error) {
-
-                    console.error('Permission gagal dihapus!', error);
-
-                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Permission failed to delete.',
                         icon: 'error',
-                        title: 'Permission gagal dihapus!',
-                        text: 'Silahkan refresh halaman!',
+                        confirmButtonText: 'Ok'
                     });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeletePermissionFromRole').modal('hide');
-                }
-            });
+                };
+                xhr.send();
+            }
         });
-
     });
 
+</script>
 
+<script>
     // fungsi post with loading
     function changeToLoadingFormUpdatePermissionsRole() {
         var btn = document.getElementById('submit-update-permission-role');
@@ -307,7 +276,7 @@
                         confirmButtonText: 'Ok'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.reload();
+                            window.location.href = window.location.href;
                         }
                     });
                 }
