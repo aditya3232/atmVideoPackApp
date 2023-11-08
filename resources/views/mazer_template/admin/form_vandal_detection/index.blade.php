@@ -121,7 +121,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-0">
                                     <label for="select2-form-vandalDetection-tid" class="form-label text-dark">TID</label>
-                                    <select id="select2-form-vandalDetection-tid" class="form-control select2-form-vandalDetection-tid" name="tid_id" style="width: 300px;">
+                                    <select id="select2-form-vandalDetection-tid" class="form-control select2-form-vandalDetection-tid" name="tid" style="width: 300px;">
                                     </select>
                                 </div>
                             </div>

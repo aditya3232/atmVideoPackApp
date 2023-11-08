@@ -82,7 +82,7 @@ class AdminController extends Controller
 
     }
 
-    // data json deviceUpDown
+    // data json deviceUpDown (buat chart)
     public function getDataDeviceUpAndDown(){
         $client = new Client();
         
@@ -164,11 +164,8 @@ class AdminController extends Controller
             $device_down = [];
 
             foreach ($get_device_down as $data) {
-                // get tid from tid_id
-                $tid_id = $data->tid_id;
-                $get_tid = TbTid::where('id', $tid_id)->first();
                 
-                $tid = $get_tid->tid;
+                $tid = $data->tid;
                 $date_time = $data->date_time;
                 $status_signal = $data->status_signal;
                 $status_storage = $data->status_storage;
@@ -249,11 +246,8 @@ class AdminController extends Controller
             $device_up = [];
 
             foreach ($get_device_up as $data) {
-                // get tid from tid_id
-                $tid_id = $data->tid_id;
-                $get_tid = TbTid::where('id', $tid_id)->first();
                 
-                $tid = $get_tid->tid;
+                $tid = $data->tid;
                 $date_time = $data->date_time;
                 $status_signal = $data->status_signal;
                 $status_storage = $data->status_storage;

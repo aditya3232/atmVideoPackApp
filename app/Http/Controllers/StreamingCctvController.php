@@ -22,7 +22,7 @@ class StreamingCctvController extends Controller
         return view('mazer_template.admin.form_streaming_cctv.index');
     }
 
-    public function streamingCctv($id) {
+    public function streamingCctv($tid) {
         $client = new Client();
 
         try {
@@ -33,7 +33,7 @@ class StreamingCctvController extends Controller
                     'x-api-key' => 'YAHYAAJA',
                     ],
                     'form_params' => [
-                        'tid_id' => $id,
+                        'tid' => $tid,
                     ],
                 ]);
                 
@@ -42,7 +42,7 @@ class StreamingCctvController extends Controller
             // get all tid_id in elastic and send to human_detection with loop
             $status_mc_detection = [];
             foreach ($status_mc_detection_elastic_data as $status_mc_detection_elastic) {
-                $tid_id = $status_mc_detection_elastic->tid_id;
+                $tid = $status_mc_detection_elastic->tid;
                 $tid_data = TbTid::join('tb_location as location', 'location.id', '=', 'tb_tid.location_id')
                     ->join('tb_regional_office as regional_office', 'regional_office.id', '=', 'location.regional_office_id')
                     ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
@@ -51,12 +51,11 @@ class StreamingCctvController extends Controller
                         'regional_office.regional_office_name',
                         'kc_supervisi.kc_supervisi_name',
                         'branch.branch_name')
-                    ->where('tb_tid.id', '=', $tid_id)
+                    ->where('tb_tid.tid', '=', $tid)
                     ->first(); // Use first() to get a single result
 
                 $combined_data = [
                     'tid' => $tid_data->tid,
-                    'tid_id' => $tid_id,
                     'regional_office_name' => $tid_data->regional_office_name,
                     'kc_supervisi_name' => $tid_data->kc_supervisi_name,
                     'branch_name' => $tid_data->branch_name,
@@ -72,7 +71,7 @@ class StreamingCctvController extends Controller
             }
 
             // streaming cctv with client guzzle from here  http://103.175.216.8:3636/api/atmvideopack/v1/stream/cctv/1
-            $url = env('STREAMING_CCTV_URL') . $id;
+            $url = env('STREAMING_CCTV_URL') . $tid;
             $response = $client->request('GET', $url, [
                 'headers' => [
                 'x-api-key' => 'YAHYAAJA',
@@ -124,7 +123,7 @@ class StreamingCctvController extends Controller
                             1 =>'regional_office.regional_office_name',
                             2 =>'kc_supervisi.kc_supervisi_name',
                             3 =>'branch.branch_name',
-                            4 =>'tb_tid.id', //action
+                            4 =>'tb_tid.tid', //action
                         );
 
         $totalData = TbTid::count();
@@ -146,8 +145,7 @@ class StreamingCctvController extends Controller
                         ->select('tb_tid.tid',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
-                            'branch.branch_name',
-                            'tb_tid.id')
+                            'branch.branch_name')
                         ->offset($start)
                         ->limit($limit)
                         ->orderBy($order, $dir)
@@ -164,8 +162,7 @@ class StreamingCctvController extends Controller
                         ->select('tb_tid.tid',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
-                            'branch.branch_name',
-                            'tb_tid.id')
+                            'branch.branch_name')
                             ->where('regional_office.regional_office_name','LIKE',"%{$search}%")
                             ->orWhere('kc_supervisi.kc_supervisi_name','LIKE',"%{$search}%")
                             ->orWhere('branch.branch_name','LIKE',"%{$search}%")
@@ -183,8 +180,7 @@ class StreamingCctvController extends Controller
                         ->select('tb_tid.tid',
                             'regional_office.regional_office_name',
                             'kc_supervisi.kc_supervisi_name',
-                            'branch.branch_name',
-                            'tb_tid.id')
+                            'branch.branch_name')
                             ->where('regional_office.regional_office_name','LIKE',"%{$search}%")
                             ->orWhere('kc_supervisi.kc_supervisi_name','LIKE',"%{$search}%")
                             ->orWhere('branch.branch_name','LIKE',"%{$search}%")
@@ -198,13 +194,11 @@ class StreamingCctvController extends Controller
         {
             foreach ($FormTbTids as $FormTbTid)
             {
-                $edit =  route('admin.streamingcctv.streaming',$FormTbTid->id);
+                $edit =  route('admin.streamingcctv.streaming',$FormTbTid->tid);
 
 
-                $TbTidId = $FormTbTid->id;
                 $Tid = $FormTbTid->tid;
 
-                $nestedData['id'] = $FormTbTid->id;
                 $nestedData['tid'] = $FormTbTid->tid;
                 $nestedData['regional_office_name'] = $FormTbTid->regional_office_name;
                 $nestedData['kc_supervisi_name'] = $FormTbTid->kc_supervisi_name;

@@ -163,7 +163,7 @@
                 console.error(xhr.statusText);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Device failed to update.',
+                    text: 'Device failed to create.',
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 });

@@ -137,14 +137,17 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
         'name' => ['required', 'string', 'max:255'],
-        // 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
         'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->back()->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->back()->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -177,7 +180,9 @@ class UserController extends Controller
 
         // Auth::login($user);
 
-        return redirect()->route('admin.users.index');
+        // return redirect()->route('admin.users.index');
+
+        return response()->json(['message' => 'User berhasil ditambahkan']);
     }
 
     public function select2Roles(Request $request) {

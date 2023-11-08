@@ -49,7 +49,7 @@ class HumanDetectionController extends Controller
                     ],
                     'form_params' => [
                         'id' => $request->id,
-                        'tid_id' => $request->tid_id,
+                        'tid' => $request->tid,
                         'date_time' => $request->date_time,
                         'start_date' => $formattedStartDateTime,
                         'end_date' => $formattedEndDateTime,
@@ -66,7 +66,7 @@ class HumanDetectionController extends Controller
             // get all tid_id in elastic and send to human_detection with loop
             $human_detection = [];
             foreach ($human_detection_elastic_data as $human_detection_elastic) {
-                $tid_id = $human_detection_elastic->tid_id;
+                $tid = $human_detection_elastic->tid;
                 $tid_data = TbTid::join('tb_location as location', 'location.id', '=', 'tb_tid.location_id')
                     ->join('tb_regional_office as regional_office', 'regional_office.id', '=', 'location.regional_office_id')
                     ->join('tb_kc_supervisi as kc_supervisi', 'kc_supervisi.id', '=', 'location.kc_supervisi_id')
@@ -75,7 +75,7 @@ class HumanDetectionController extends Controller
                         'regional_office.regional_office_name',
                         'kc_supervisi.kc_supervisi_name',
                         'branch.branch_name')
-                    ->where('tb_tid.id', '=', $tid_id)
+                    ->where('tb_tid.tid', '=', $tid)
                     ->first(); // Use first() to get a single result
 
                 $combined_data = [
@@ -121,10 +121,8 @@ class HumanDetectionController extends Controller
 
         // get request
         $tid = null; // Inisialisasi variabel $tid dengan nilai default null
-        if ($request->has('tid_id')) {
-            $tid_id = $request->tid_id;
-            $tid_data = TbTid::select('tid')->where('id', '=', $tid_id)->first();
-            $tid = $tid_data->tid;
+        if ($request->has('tid')) {
+            $tid = $request->tid;
         }
 
         $person = null;
@@ -307,7 +305,7 @@ class HumanDetectionController extends Controller
         $response = array();
             foreach($tids as $tid){
                 $response[] = array(
-                    "id"=> $tid->id,
+                    "id"=> $tid->tid, // pake tid untuk search datanya
                     "text"=> $tid->tid
                 );
             }
