@@ -76,6 +76,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
     Route::get('/getdatatabledeviceup', [AdminController::class, 'getDatatablesDeviceUp'])->name('getdatatabledeviceup');
 });
 
+// telescope
+Route::get('/telescope', function () {
+    return redirect('/telescope/requests');
+})->name('telescope');
+
 // permissions
 Route::group(['prefix' => 'admin/permissions', 'as' => 'admin.permissions.', 'middleware' => ['auth', 'roleHasPermission:sidebar child permissions']], function() {
     Route::get('/',[ PermissionController::class, 'index'])->name('index');

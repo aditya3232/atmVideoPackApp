@@ -129,7 +129,7 @@
                                     <a href="{{ route('admin.permissions.index') }}"><i class="bi bi-person-lines-fill"></i> Permissions</a>
                                 </li>
                             @endcan
-                            <li class="{{ (request()->is('admin/telescope')) ? 'submenu-item active' : 'submenu-item' }}">
+                            <li class="submenu-item">
                                 <a href="{{ route('telescope') }}" target="_blank">
                                     <i class="bi bi-file-earmark-ruled-fill"></i>
                                     <span>Logs</span>
