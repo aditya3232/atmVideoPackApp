@@ -276,47 +276,56 @@
     }
 
     function submitFormUpdatePermissionsRole() {
-        // after post id = post-add-permission-to-role show sukses with swal
-        $('#post-add-permission-to-role').on('submit', function (event) {
-            event.preventDefault();
+        // Get the form element
+        var form = document.getElementById('post-add-permission-to-role');
 
-            var action = $(this).attr('action');
-            var method = $(this).attr('method');
-            var data = $(this).serialize();
+        // Create a new FormData object
+        var formData = new FormData(form);
 
-            $.ajax({
-                type: method,
-                url: action,
-                data: data,
-                success: function (response) {
-                    console.log('Permission berhasil ditambahkan!', response);
-
+        // Send the form data using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.errors) {
+                    // Handle validation errors
+                    var errorMessages = Object.values(response.errors).join('<br>');
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Permission berhasil ditambahkan!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-                },
-                error: function (error) {
-                    console.error('Permission gagal ditambahkan!', error);
-
-                    Swal.fire({
+                        title: 'Validation Error',
+                        html: errorMessages, // Gunakan html untuk mengaktifkan baris baru (\n)
                         icon: 'error',
-                        title: 'Permission gagal ditambahkan!',
-                        text: 'Silahkan refresh halaman!',
+                        confirmButtonText: 'Ok'
                     });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
+                } else {
+                    // Handle a successful response
+                    console.log(response.message);
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
                 }
-            });
-        });
+            } else {
+                // Handle errors
+                console.error(xhr.statusText);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Role failed to update.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        };
+        xhr.onerror = function () {
+            console.error(xhr.statusText);
+        };
+        xhr.send(formData);
     }
 
 </script>

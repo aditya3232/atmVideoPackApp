@@ -244,15 +244,20 @@ class RoleController extends Controller
 
         $permissions = $request->permissions;
 
-        foreach ($permissions as $permission) {
-            PermissionRole::insert([
-                'role_id' => $id,
-                'permission_id' => $permission,
-            ]);
+        if($permissions) {
+            foreach ($permissions as $permission) {
+                PermissionRole::insert([
+                    'role_id' => $id,
+                    'permission_id' => $permission,
+                ]);
+            }
+            
+            Alert::success('Sukses', 'Permission telah ditambahkan');
+            return back();
+        } else {
+            Alert::error('Gagal', 'Tidak ada permissions yang ditambahkan');
+            return back();
         }
-        
-        Alert::success('Sukses', 'Permission telah ditambahkan');
-        return back();
     }
 
     public function deletePermissions($role_id, $permission_id) {
