@@ -268,9 +268,13 @@ class UserController extends Controller
             'role_id' => 'required',
         ],$messages);
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.users.edit',$id)->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.users.edit',$id)->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         try {
@@ -296,8 +300,10 @@ class UserController extends Controller
             return redirect()->route('admin.users.edit',$id);
         }
 
-        Alert::success('Sukses', 'Update form user berhasil');
-        return redirect()->route('admin.users.index');
+        // Alert::success('Sukses', 'Update form user berhasil');
+        // return redirect()->route('admin.users.index');
+
+        return response()->json(['message' => 'User berhasil diupdate']);
     }
 
     public function destroy($id) {
