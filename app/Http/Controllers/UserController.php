@@ -133,7 +133,7 @@ class UserController extends Controller
         return view('mazer_template.admin.users.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
         'name' => ['required', 'string', 'max:255'],
