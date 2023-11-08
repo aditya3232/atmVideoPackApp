@@ -50,8 +50,7 @@
                                         <td>{{ $data['file_size_bytes'] }}</td>
                                         <td>{{ $data['filename'] }}</td>
                                         <td>
-                                            <a href="{{ route('decryptUrl', ['encryptedUrl' => $data['url']]) }}" class="btn btn-primary btn-sm"
-                                                title="Download">
+                                            <a href="{{ $data['url'] }}" class="btn btn-primary btn-sm" title="Download">
                                                 <i class="bi bi-download"></i>
                                             </a>
                                         </td>
