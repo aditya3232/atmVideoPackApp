@@ -292,13 +292,17 @@ class RoleController extends Controller
         if($request->input('name') != $Role->name) {
             // Check if the 'name' values is unique
             $validator = Validator::make($request->all(),[
-                'name' => 'unique:roles,name',
+                'name' => 'required|unique:roles,name',
             ],$messages);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.roles.edit',$id)->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.roles.edit',$id)->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         $upadted_at= date("Y-m-d H:i:s");
@@ -308,8 +312,10 @@ class RoleController extends Controller
                 'updated_at'=>$upadted_at,
             ]);
 
-        Alert::success('Sukses', 'Update role berhasil');
-        return redirect()->route('admin.roles.index');
+        // Alert::success('Sukses', 'Update role berhasil');
+        // return redirect()->route('admin.roles.index');
+
+        return response()->json(['message' => 'Role name berhasil diupdate']);
     }
 
     public function destroy($id) {
