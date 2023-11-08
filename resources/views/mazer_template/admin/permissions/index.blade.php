@@ -40,37 +40,6 @@
 
     </section>
 
-    {{-- modal here --}}
-    <div class="modal fade" id="modalDeletePermission" tabindex="-1" aria-labelledby="modalDeletePermissionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-body text-center no-copy">
-                    <div>
-                        <i class="bi bi-exclamation-circle" style="font-size: 100px; color:rgba(255, 165, 0, 0.4);"></i>
-                    </div>
-
-                    <div class="mb-4 mt-2">
-                        <h2 class="text-primary">Delete Permission!</h2>
-                        <span class='badge bg-primary mb-2' style='border-radius: 12px;'>
-                            <text id="data_permission_name" style="font-size: 16px">
-                        </span>
-                    </div>
-
-                    <div>
-                        <p>Apakah anda yakin ingin delete permission?</p>
-                    </div>
-
-                    <div>
-                        <button class="btn" id="btn-delete-permission" style="border-radius:12px; background-color:#FF0000; color:white;"> Yes, delete it!</button>
-                        <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal" style="border-radius:12px;"><i class="bi bi-x-circle"></i> Cancel</button>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 </div>
 
 {{-- script delete card --}}
@@ -78,72 +47,69 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).on('click', '#delete-permission-data', function (e) {
+        e.preventDefault();
+        var tbPermissionId = $(this).data('tb-permission-id');
+        var permissionName = $(this).data('permission-name');
 
-        var permissionId; // Declare entryId variable in an accessible scope
-
-        $('#modalDeletePermission').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var permissionId = button.data('permission-id');
-            var permissionName = button.data('permission-name');
-
-            // Attach the entryId value to the delete button
-            $('#btn-delete-permission').data('permission-id', permissionId);
-
-            $('#data_permission_name').text(permissionName);
-        });
-
-        $('#btn-delete-permission').on('click', function (event) {
-            // Get the entryId value from the button's data attribute
-            var permissionId = $(this).data('permission-id');
-
-            var action = "{{ route('admin.permissions.destroy', '') }}" + '/' + permissionId;
-            console.log(action);
-            let token = $("meta[name='csrf-token']").attr("content");
-
-            $.ajax({
-                type: 'POST',
-                url: action,
-                data: {
-                    "_token": token,
-                    "_method": "DELETE" // Use method spoofing for DELETE
-                },
-                success: function (response) {
-                    console.log('Permission berhasil dihapus!', response);
-
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Apakah anda yakin akan menghapus permission: ' + permissionName + ' ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#56B000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('DELETE', "{{ route('admin.permissions.destroy', '') }}" + '/' + tbPermissionId, true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', $("input[name=_token]").val());
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonColor: '#56B000',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Ganti location.reload() dengan window.location.href
+                                    window.location.href = "{{ route('admin.permissions.index') }}";
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Permission failed to delete.',
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
+                    } else {
+                        console.error(xhr.statusText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Permission failed to delete.',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                };
+                xhr.onerror = function () {
+                    console.error(xhr.statusText);
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Permission berhasil dihapus!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeletePermission').modal('hide');
-                },
-                error: function (error) {
-
-                    console.error('Permission gagal dihapus!', error);
-
-                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Permission failed to delete.',
                         icon: 'error',
-                        title: 'Permission gagal dihapus!',
-                        text: 'Silahkan refresh halaman!',
+                        confirmButtonText: 'Ok'
                     });
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 2000);
-
-                    $('#modalDeletePermission').modal('hide');
-                }
-            });
+                };
+                xhr.send();
+            }
         });
-
-
     });
 
 </script>

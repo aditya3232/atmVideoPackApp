@@ -67,7 +67,7 @@ class PermissionController extends Controller
                 $nestedData['name'] = $Permission->name;
                 $nestedData['options'] = "
                 <a href='{$edit}' title='EDIT' class='btn btn-sm mt-2' style='border-radius:12px; background-color:#0000FF; color:white;'><i class='bi bi-wrench'></i></a>
-                <a data-permission-id='$permissionId' data-permission-name='$permissionName' title='DESTROY' class='btn btn-sm mt-2' data-bs-toggle='modal' data-bs-target='#modalDeletePermission' style='border-radius:12px; background-color:#FF0000; color:white;'><i class='bi bi-trash'></i></a>
+                <button type='button' class='btn btn-sm mt-2' id='delete-permission-data' style='border-radius:12px; background-color:#FF0000; color:white;' data-permission-name='{$permissionName}' data-tb-permission-id='{$permissionId}'><i class='bi bi-trash'></i></button>
                 ";
                 $data[] = $nestedData;
 
@@ -102,17 +102,24 @@ class PermissionController extends Controller
             'name' => 'required|unique:permissions,name',
         ],$messages);
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.permissions.create')->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.permissions.create')->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
+
 
         Permission::insert([
             'name' => $request->input('name'),
         ]);
 
-        Alert::success('Sukses', 'Tambah permission berhasil');
-        return redirect()->route('admin.permissions.index');
+        // Alert::success('Sukses', 'Tambah permission berhasil');
+        // return redirect()->route('admin.permissions.index');
+
+        return response()->json(['message' => 'Permission berhasil ditambahkan']);
     }
 
     public function edit($id) {
@@ -141,9 +148,13 @@ class PermissionController extends Controller
             $validator->addRules(['name' => 'required|unique:permissions,name']);
         }
 
+        // if($validator->fails()) {
+        //     Alert::error('Cek kembali pengisian form, terima kasih !');
+        //     return redirect()->route('admin.permissions.edit',$id)->withErrors($validator->errors())->withInput();
+        // }
+
         if($validator->fails()) {
-            Alert::error('Cek kembali pengisian form, terima kasih !');
-            return redirect()->route('admin.permissions.edit',$id)->withErrors($validator->errors())->withInput();
+            return response()->json(['errors' => $validator->errors()]);
         }
 
         $upadted_at= date("Y-m-d H:i:s");
@@ -153,8 +164,10 @@ class PermissionController extends Controller
                 'updated_at'=>$upadted_at,
             ]);
 
-        Alert::success('Sukses', 'Update permission berhasil');
-        return redirect()->route('admin.permissions.index');
+        // Alert::success('Sukses', 'Update permission berhasil');
+        // return redirect()->route('admin.permissions.index');
+
+        return response()->json(['message' => 'Permission berhasil diupdate']);
     }
 
     public function destroy($id) {
@@ -162,8 +175,10 @@ class PermissionController extends Controller
 
         $permission->delete();
 
-        Alert::success('Sukses', 'Permission berhasil dihapus');
-        return redirect()->route('admin.permissions.index');
+        // Alert::success('Sukses', 'Permission berhasil dihapus');
+        // return redirect()->route('admin.permissions.index');
+
+        return response()->json(['message' => 'Permission berhasil dihapus']);
     }
 
 
