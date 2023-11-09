@@ -70,19 +70,12 @@ class StreamingCctvController extends Controller
                 $status_mc_detection[] = $combined_data;
             }
 
-            // streaming cctv with client guzzle from here  http://103.175.216.8:3636/api/atmvideopack/v1/stream/cctv/1
+            // streaming cctv with client guzzle from here  http://127.0.0.1:3636/api/atmvideopack/v1/stream/cctv/160001
             $url = env('STREAMING_CCTV_URL') . $tid;
-            $response = $client->request('GET', $url, [
-                'headers' => [
-                'x-api-key' => 'YAHYAAJA',
-                ],
-            ]);
-
-            $streaming_cctv_data = json_decode($response->getBody());
 
             return view('mazer_template.admin.form_streaming_cctv.streaming', [
                 'status_mc_detection' => $status_mc_detection,
-                'streaming_cctv_data' => $streaming_cctv_data,
+                'streaming_cctv_data' => $url,
             ]);
             
 
