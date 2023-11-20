@@ -209,12 +209,12 @@
 
         <div class="col-6 col-lg-8 col-md-6">
             <div class="card">
-                <div class="card-body px-3 py-4-5">
+                <div class="card-body px-3">
                     <div class="row">
                         {{-- live icon --}}
-                        <div class="col-md-12 text-left">
+                        {{-- <div class="col-md-12 text-left">
                             <img src="/assets/images//samples/live.png" alt="" width="70px;">
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" style="width: 100%;">
